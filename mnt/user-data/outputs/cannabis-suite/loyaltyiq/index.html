@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoyaltyIQ — Cannabis Customer Retention AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#1a4a2e;--green-mid:#2d7a4f;--green-light:#4db87a;--green-pale:#e8f5ee;
+  --gold:#c8a84b;--cream:#faf8f2;--dark:#0e1a13;
+  --text:#1c2b20;--muted:#5a7a62;--border:#c8dac0;
+  --red:#c0392b;--amber:#d68910;--blue:#1a5276;--sidebar:260px
+}
+body{background:var(--cream);color:var(--text);font-family:'Instrument Sans',sans-serif;display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar);background:var(--dark);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:50}
+.sidebar-logo{padding:28px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo .product{font-family:'Fraunces',serif;font-size:20px;color:#fff;font-weight:600}
+.sidebar-logo .by{font-size:11px;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;margin-top:2px}
+.sidebar-demo{margin:16px;padding:8px 12px;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.06em}
+nav.sidebar-nav{flex:1;padding:16px 0}
+.nav-section{padding:8px 20px 4px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.55);font-size:13px;cursor:pointer;transition:all .15s;border-left:2px solid transparent;text-decoration:none}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--green-light)}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar-title{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--dark)}
+.content{padding:32px;display:flex;flex-direction:column;gap:24px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px}
+.kpi-label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.kpi-value{font-family:'Fraunces',serif;font-size:36px;font-weight:600;color:var(--dark);line-height:1}
+.kpi-delta{font-size:12px;margin-top:6px}
+.delta-up{color:var(--green-mid)}.delta-dn{color:var(--red)}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.card-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--dark)}
+.mid-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+
+/* Customer table */
+table{width:100%;border-collapse:collapse}
+th{padding:10px 16px;font-size:10px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);background:var(--cream)}
+td{padding:12px 16px;font-size:12px;border-bottom:1px solid rgba(200,218,192,.3);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.risk-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;width:70px;display:inline-block;vertical-align:middle}
+.risk-fill{height:100%;border-radius:3px}
+.risk-high{background:var(--red)}
+.risk-med{background:var(--amber)}
+.risk-low{background:var(--green-light)}
+.seg-badge{padding:2px 8px;border-radius:100px;font-size:10px;font-family:'DM Mono',monospace}
+.seg-vip{background:#f0e6ff;color:#6c3483}
+.seg-risk{background:#fdecea;color:var(--red)}
+.seg-loyal{background:#e8f5ee;color:var(--green-mid)}
+.seg-new{background:#e3f2fd;color:#1565c0}
+.seg-lapsed{background:#fff8e1;color:var(--amber)}
+
+/* Campaign generator */
+.campaign-section{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.campaign-builder{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.campaign-body{padding:22px;display:flex;flex-direction:column;gap:14px}
+.form-label{display:block;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px}
+.form-select,.form-input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Instrument Sans',sans-serif;outline:none;background:var(--cream);color:var(--text);transition:border-color .2s}
+.form-select:focus,.form-input:focus{border-color:var(--green-mid)}
+.gen-btn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:12px 20px;font-size:13px;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:background .2s}
+.gen-btn:hover{background:var(--green-mid)}
+.gen-btn:disabled{background:var(--muted);cursor:not-allowed}
+
+/* Campaign output */
+.campaign-output{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.campaign-output-body{padding:22px}
+.channel-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px}
+.channel-tab{flex:1;padding:8px;text-align:center;font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;background:var(--cream);color:var(--muted);border:none;transition:all .2s}
+.channel-tab.active{background:var(--green);color:#fff}
+.msg-box{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px;min-height:120px;font-size:13px;line-height:1.7;white-space:pre-wrap}
+.char-count{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:6px}
+.copy-btn{margin-top:10px;padding:8px 16px;border:1px solid var(--border);border-radius:6px;background:var(--cream);font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:all .2s}
+.copy-btn:hover{background:var(--green-pale);border-color:var(--green-mid)}
+
+/* Segment donut */
+.segment-chart{display:flex;align-items:center;gap:24px;padding:22px}
+.donut-wrap{position:relative;width:120px;height:120px;flex-shrink:0}
+.donut-wrap svg{width:120px;height:120px}
+.donut-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--dark)}
+.donut-label span{font-size:11px;color:var(--muted);font-family:'Instrument Sans',sans-serif}
+.legend{display:flex;flex-direction:column;gap:8px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="product">LoyaltyIQ</div>
+    <div class="by">by NormandinTECH</div>
+  </div>
+  <div class="sidebar-demo">LIQ-DEMO-00000000</div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Intelligence</div>
+    <a class="nav-item active" href="#">📉 Churn Predictions</a>
+    <a class="nav-item" href="#">🧩 Segmentation</a>
+    <a class="nav-item" href="#">💰 LTV Analysis</a>
+    <div class="nav-section">Campaigns</div>
+    <a class="nav-item" href="#">✉️ Campaign Builder</a>
+    <a class="nav-item" href="#">📱 SMS Automation</a>
+    <a class="nav-item" href="#">📧 Email Flows</a>
+    <div class="nav-section">Reports</div>
+    <a class="nav-item" href="#">📊 Retention Trends</a>
+    <a class="nav-item" href="#">💡 Win-Back Results</a>
+    <a class="nav-item" href="#">⚙️ Settings</a>
+  </nav>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Churn Intelligence &amp; Retention</div>
+    <div style="font-size:13px;color:var(--muted)">847 active customers · Updated 2h ago</div>
+  </div>
+
+  <div class="content">
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Churn Risk (30d)</div>
+        <div class="kpi-value" style="color:var(--amber)">127</div>
+        <div class="kpi-delta delta-dn">↑ 18 vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Retention Rate</div>
+        <div class="kpi-value">72<span style="font-size:20px">%</span></div>
+        <div class="kpi-delta delta-up">↑ 4pts this month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg LTV</div>
+        <div class="kpi-value">$840</div>
+        <div class="kpi-delta delta-up">↑ $62 this quarter</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">VIP Customers</div>
+        <div class="kpi-value" style="color:#6c3483">94</div>
+        <div class="kpi-delta" style="color:var(--muted)">Top 11% of base</div>
+      </div>
+    </div>
+
+    <div class="mid-row">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">High-Risk Customers — Act Now</div>
+          <div style="font-size:11px;color:var(--red);font-family:'DM Mono',monospace">127 at risk</div>
+        </div>
+        <table>
+          <tr><th>Customer</th><th>Segment</th><th>Last Visit</th><th>Churn Risk</th><th>Rec. Action</th></tr>
+          <tr>
+            <td><strong>M. Thompson</strong></td>
+            <td><span class="seg-badge seg-vip">VIP</span></td>
+            <td>43 days ago</td>
+            <td><div class="risk-bar"><div class="risk-fill risk-high" style="width:87%"></div></div> 87%</td>
+            <td style="font-size:11px;color:var(--red)">Priority win-back</td>
+          </tr>
+          <tr>
+            <td><strong>J. Rivera</strong></td>
+            <td><span class="seg-badge seg-loyal">Loyal</span></td>
+            <td>38 days ago</td>
+            <td><div class="risk-bar"><div class="risk-fill risk-high" style="width:82%"></div></div> 82%</td>
+            <td style="font-size:11px;color:var(--red)">Send offer now</td>
+          </tr>
+          <tr>
+            <td><strong>K. Chen</strong></td>
+            <td><span class="seg-badge seg-loyal">Loyal</span></td>
+            <td>31 days ago</td>
+            <td><div class="risk-bar"><div class="risk-fill risk-med" style="width:67%"></div></div> 67%</td>
+            <td style="font-size:11px;color:var(--amber)">Re-engage</td>
+          </tr>
+          <tr>
+            <td><strong>A. Johnson</strong></td>
+            <td><span class="seg-badge seg-new">New</span></td>
+            <td>27 days ago</td>
+            <td><div class="risk-bar"><div class="risk-fill risk-med" style="width:61%"></div></div> 61%</td>
+            <td style="font-size:11px;color:var(--amber)">Education email</td>
+          </tr>
+          <tr>
+            <td><strong>D. Williams</strong></td>
+            <td><span class="seg-badge seg-lapsed">Lapsed</span></td>
+            <td>62 days ago</td>
+            <td><div class="risk-bar"><div class="risk-fill risk-high" style="width:94%"></div></div> 94%</td>
+            <td style="font-size:11px;color:var(--red)">Last chance offer</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Customer Segments</div></div>
+        <div class="segment-chart">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#6c3483" stroke-width="3.5" stroke-dasharray="11 89" stroke-dashoffset="25"/>
+              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--green-light)" stroke-width="3.5" stroke-dasharray="35 65" stroke-dashoffset="14"/>
+              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--amber)" stroke-width="3.5" stroke-dasharray="15 85" stroke-dashoffset="-21"/>
+              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#1565c0" stroke-width="3.5" stroke-dasharray="22 78" stroke-dashoffset="-36"/>
+              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--red)" stroke-width="3.5" stroke-dasharray="17 83" stroke-dashoffset="-58"/>
+            </svg>
+            <div class="donut-label">847<span>customers</span></div>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#6c3483"></div><span>VIP (94) · 11%</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--green-light)"></div><span>Loyal (296) · 35%</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div><span>New (186) · 22%</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div><span>At-Risk (127) · 15%</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div><span>Lapsed (144) · 17%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="campaign-section">
+      <div class="campaign-builder">
+        <div class="card-header">
+          <div class="card-title">AI Campaign Builder</div>
+          <div style="font-size:11px;color:var(--green-mid);font-family:'DM Mono',monospace">Compliant · Personalized</div>
+        </div>
+        <div class="campaign-body">
+          <div>
+            <label class="form-label">Target segment</label>
+            <select class="form-select" id="segmentSelect">
+              <option value="vip_winback">VIP customers — haven't visited in 30+ days</option>
+              <option value="at_risk">At-risk customers — 60% churn probability</option>
+              <option value="new_customer">New customers — first visit in last 7 days</option>
+              <option value="lapsed">Lapsed customers — no visit in 60+ days</option>
+              <option value="loyal">Loyal customers — upsell opportunity</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Campaign channel</label>
+            <select class="form-select" id="channelSelect">
+              <option value="sms">SMS (TCPA compliant)</option>
+              <option value="email">Email campaign</option>
+              <option value="loyalty_push">Loyalty app push</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Offer / hook</label>
+            <select class="form-select" id="offerSelect">
+              <option value="15_off">15% off next visit</option>
+              <option value="free_preroll">Free pre-roll with $40+ purchase</option>
+              <option value="double_points">Double loyalty points this weekend</option>
+              <option value="new_arrivals">Personalized new arrival recommendations</option>
+              <option value="vip_event">VIP early access to new drops</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Dispensary name</label>
+            <input class="form-input" id="dispName" placeholder="e.g. Green Valley Dispensary" value="Green Valley Dispensary">
+          </div>
+          <button class="gen-btn" id="campBtn" onclick="generateCampaign()">Generate Campaign →</button>
+        </div>
+      </div>
+
+      <div class="campaign-output">
+        <div class="card-header">
+          <div class="card-title">Campaign Output</div>
+        </div>
+        <div class="campaign-output-body">
+          <div class="channel-tabs" id="channelTabs" style="display:none">
+            <button class="channel-tab active" onclick="switchTab(this,'sms')">SMS</button>
+            <button class="channel-tab" onclick="switchTab(this,'email')">Email Subject</button>
+            <button class="channel-tab" onclick="switchTab(this,'body')">Email Body</button>
+          </div>
+          <div class="msg-box" id="smsBox">Click "Generate Campaign" to create compliant, personalized messaging for your selected customer segment.</div>
+          <div class="msg-box" id="emailSubjectBox" style="display:none"></div>
+          <div class="msg-box" id="emailBodyBox" style="display:none"></div>
+          <div class="char-count" id="charCount"></div>
+          <button class="copy-btn" id="copyBtn" onclick="copyOutput()" style="display:none">Copy to clipboard</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentTab='sms';
+function switchTab(el,tab){
+  document.querySelectorAll('.channel-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentTab=tab;
+  document.getElementById('smsBox').style.display=tab==='sms'?'block':'none';
+  document.getElementById('emailSubjectBox').style.display=tab==='email'?'block':'none';
+  document.getElementById('emailBodyBox').style.display=tab==='body'?'block':'none';
+  updateCharCount();
+}
+function updateCharCount(){
+  const boxes={sms:document.getElementById('smsBox'),email:document.getElementById('emailSubjectBox'),body:document.getElementById('emailBodyBox')};
+  const box=boxes[currentTab];
+  if(box&&box.textContent.length>30){
+    document.getElementById('charCount').textContent=`${box.textContent.length} characters`;
+  }
+}
+function copyOutput(){
+  const boxes={sms:'smsBox',email:'emailSubjectBox',body:'emailBodyBox'};
+  const text=document.getElementById(boxes[currentTab]||'smsBox').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy to clipboard',2000);
+  });
+}
+async function generateCampaign(){
+  const segment=document.getElementById('segmentSelect').value;
+  const channel=document.getElementById('channelSelect').value;
+  const offer=document.getElementById('offerSelect').value;
+  const name=document.getElementById('dispName').value||'our dispensary';
+  const btn=document.getElementById('campBtn');
+  btn.disabled=true;btn.textContent='Generating...';
+  document.getElementById('smsBox').textContent='Writing your campaign...';
+
+  const segLabels={vip_winback:'VIP customers who haven\'t visited in 30+ days',at_risk:'at-risk customers with high churn probability',new_customer:'new customers who made their first purchase in the last 7 days',lapsed:'lapsed customers who haven\'t visited in 60+ days',loyal:'loyal customers for an upsell'};
+  const offerLabels={'15_off':'15% off their next visit','free_preroll':'a free pre-roll with any $40+ purchase','double_points':'double loyalty points this weekend','new_arrivals':'personalized new product recommendations','vip_event':'VIP early access to new product drops'};
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are LoyaltyIQ, a cannabis customer retention AI by NormandinTECH. You generate compliant cannabis marketing campaigns for dispensaries.
+
+CRITICAL compliance rules:
+- Never make health claims
+- No consumption imagery language  
+- Always age-appropriate (21+)
+- For SMS: under 160 characters, include opt-out language
+- Cannot reference pricing in a way that violates state regs
+- Keep messaging warm and community-focused
+
+Return exactly this JSON structure:
+{"sms": "SMS message under 160 chars with STOP opt-out", "emailSubject": "email subject line", "emailBody": "2-3 paragraph email body"}`,
+        messages:[{role:'user',content:`Generate a ${channel} campaign for ${name} targeting ${segLabels[segment]} with offer: ${offerLabels[offer]}. Make it warm, personalized, and fully compliant.`}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'{}';
+    let parsed;
+    try{parsed=JSON.parse(text.replace(/```json|```/g,'').trim())}
+    catch{parsed={sms:text,emailSubject:'Subject line unavailable',emailBody:text}}
+
+    document.getElementById('smsBox').textContent=parsed.sms||'No SMS generated';
+    document.getElementById('emailSubjectBox').textContent=parsed.emailSubject||'No subject generated';
+    document.getElementById('emailBodyBox').textContent=parsed.emailBody||'No email body generated';
+    document.getElementById('channelTabs').style.display='flex';
+    document.getElementById('copyBtn').style.display='inline-block';
+    updateCharCount();
+  }catch(e){
+    document.getElementById('smsBox').textContent='Network error. Please try again.';
+  }
+  btn.disabled=false;btn.textContent='Generate Campaign →';
+}
+</script>
+</body>
+</html>
