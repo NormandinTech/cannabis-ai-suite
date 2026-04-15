@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cannabis AI — NormandinTECH</title>
+<meta name="description" content="NormandinTECH Cannabis AI Suite — Six purpose-built AI products for cannabis operators. Compliance, cultivation, retail, loyalty, and marketing intelligence.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0a0f0c;
+  --ink2:#111a14;
+  --ink3:#1a2a1e;
+  --sage:#2d5a3d;
+  --sage-mid:#3d7a52;
+  --sage-light:#5fa876;
+  --sage-pale:#8fcfa0;
+  --gold:#b8943a;
+  --gold-light:#d4ad58;
+  --cream:#f2efe6;
+  --cream2:#e8e4d8;
+  --fog:#c4c9be;
+  --mist:#8a9686;
+  --border:rgba(93,168,118,.18);
+  --border2:rgba(93,168,118,.08);
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--cream);
+  font-family:'Syne',sans-serif;overflow-x:hidden;
+  cursor:none;
+}
+
+/* Custom cursor */
+.cursor{
+  position:fixed;width:8px;height:8px;background:var(--sage-light);
+  border-radius:50%;pointer-events:none;z-index:9999;
+  transition:transform .15s ease;mix-blend-mode:difference;
+}
+.cursor-ring{
+  position:fixed;width:32px;height:32px;border:1px solid var(--sage-pale);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transition:all .08s ease;mix-blend-mode:difference;opacity:.6;
+}
+
+/* Nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:22px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(to bottom,rgba(10,15,12,.95) 0%,transparent 100%);
+}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-wordmark{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);text-decoration:none}
+.nav-slash{color:var(--sage-mid);margin:0 6px}
+.nav-vertical{font-family:'DM Mono',monospace;font-size:12px;color:var(--sage-pale);letter-spacing:.06em}
+.nav-links{display:flex;gap:36px}
+.nav-links a{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--cream)}
+.nav-cta{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);background:var(--sage-light);padding:10px 22px;border-radius:2px;
+  text-decoration:none;transition:background .2s
+}
+.nav-cta:hover{background:var(--sage-pale)}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 60px 80px;position:relative;overflow:hidden;
+}
+/* Grid lines */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--border2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+}
+/* Radial glow */
+.hero-glow{
+  position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+  width:900px;height:600px;
+  background:radial-gradient(ellipse,rgba(45,90,61,.35) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-label{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--sage-pale);margin-bottom:28px;
+  display:flex;align-items:center;gap:12px
+}
+.hero-label::before{content:'';width:32px;height:1px;background:var(--sage-mid)}
+.hero-h1{
+  font-family:'Playfair Display',serif;font-size:clamp(60px,9vw,128px);
+  font-weight:400;line-height:.95;color:var(--cream);margin-bottom:48px;
+  max-width:900px;
+}
+.hero-h1 em{font-style:italic;color:var(--sage-pale)}
+.hero-h1 .line2{display:block;padding-left:120px}
+.hero-meta{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  border-top:1px solid var(--border);padding-top:32px;
+}
+.hero-desc{font-size:15px;color:var(--mist);max-width:480px;line-height:1.7;font-weight:400}
+.hero-stats{display:flex;gap:48px}
+.hero-stat-num{
+  font-family:'Playfair Display',serif;font-size:40px;font-weight:700;
+  color:var(--sage-light);line-height:1
+}
+.hero-stat-label{font-size:11px;color:var(--mist);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-top:4px}
+
+/* ─── TICKER ─── */
+.ticker{
+  background:var(--sage);padding:14px 0;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.ticker-inner{
+  display:flex;white-space:nowrap;
+  animation:ticker 28s linear infinite;
+}
+.ticker-item{
+  display:flex;align-items:center;gap:16px;padding:0 32px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(255,255,255,.8);flex-shrink:0;
+}
+.ticker-dot{width:4px;height:4px;background:var(--sage-pale);border-radius:50%}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── SECTION BASE ─── */
+section{padding:120px 60px}
+.s-label{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--sage-mid);margin-bottom:20px;
+  display:flex;align-items:center;gap:10px
+}
+.s-label::before{content:'';width:20px;height:1px;background:var(--sage-mid)}
+.s-title{
+  font-family:'Playfair Display',serif;font-weight:400;
+  color:var(--cream);line-height:1.1;
+}
+
+/* ─── PROBLEM ─── */
+.problem-section{background:var(--ink2);position:relative}
+.problem-section::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent)
+}
+.problem-inner{max-width:1200px;margin:0 auto}
+.problem-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:80px}
+.problem-title{font-size:clamp(36px,4.5vw,60px)}
+.problem-intro{font-size:15px;color:var(--mist);line-height:1.8}
+.problem-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border)}
+.problem-card{background:var(--ink2);padding:48px 44px;position:relative;overflow:hidden;transition:background .3s}
+.problem-card:hover{background:var(--ink3)}
+.problem-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--sage-mid),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .4s
+}
+.problem-card:hover::before{transform:scaleX(1)}
+.problem-num{
+  font-family:'Playfair Display',serif;font-size:72px;font-weight:700;
+  color:var(--border);line-height:1;margin-bottom:20px;
+  transition:color .3s;
+}
+.problem-card:hover .problem-num{color:rgba(93,168,118,.25)}
+.problem-name{font-size:20px;font-weight:700;color:var(--cream);margin-bottom:12px;letter-spacing:.01em}
+.problem-text{font-size:13px;color:var(--mist);line-height:1.8}
+
+/* ─── PRODUCTS ─── */
+.products-section{max-width:1400px;margin:0 auto;padding:120px 60px}
+.products-header{margin-bottom:72px}
+.products-header .s-title{font-size:clamp(40px,5vw,68px);max-width:700px}
+.products-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.product-tile{
+  background:var(--ink);padding:48px 40px;cursor:pointer;
+  position:relative;overflow:hidden;transition:background .25s;
+  text-decoration:none;display:block;color:inherit;
+}
+.product-tile:hover{background:var(--ink3)}
+.tile-number{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--sage-mid);
+  letter-spacing:.1em;margin-bottom:36px;
+}
+.tile-name{
+  font-family:'Playfair Display',serif;font-size:30px;font-weight:400;
+  color:var(--cream);margin-bottom:8px;line-height:1.1;
+}
+.tile-port{font-family:'DM Mono',monospace;font-size:10px;color:var(--mist);margin-bottom:20px;letter-spacing:.08em}
+.tile-desc{font-size:13px;color:var(--mist);line-height:1.7;margin-bottom:28px}
+.tile-features{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:32px}
+.tile-features li{font-size:12px;color:var(--fog);padding-left:14px;position:relative;line-height:1.5;font-family:'DM Mono',monospace}
+.tile-features li::before{content:'→';position:absolute;left:0;color:var(--sage-mid);font-size:10px;top:1px}
+.tile-arrow{
+  display:flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;
+  color:var(--sage-light);text-transform:uppercase;
+  transition:gap .2s;
+}
+.product-tile:hover .tile-arrow{gap:14px}
+.tile-arrow::after{content:'→'}
+
+/* Full-width tile */
+.product-tile-wide{grid-column:span 3;display:grid;grid-template-columns:1fr 1fr;gap:0}
+.tile-wide-left{padding:48px 40px;border-right:1px solid var(--border)}
+.tile-wide-right{padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between}
+.compliance-platforms{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.platform-tag{
+  padding:5px 12px;border:1px solid var(--border);border-radius:2px;
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--sage-pale);
+  letter-spacing:.06em;text-transform:uppercase;
+}
+
+/* ─── MARKET ─── */
+.market-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.market-inner{max-width:1200px;margin:0 auto}
+.market-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border)}
+.market-card{padding:44px 36px;border-right:1px solid var(--border)}
+.market-card:last-child{border-right:none}
+.market-num{
+  font-family:'Playfair Display',serif;font-size:52px;font-weight:700;
+  color:var(--sage-light);line-height:1;margin-bottom:12px;
+}
+.market-label{font-size:12px;color:var(--mist);line-height:1.5;font-weight:400}
+.market-source{font-family:'DM Mono',monospace;font-size:10px;color:var(--sage-mid);margin-top:8px;letter-spacing:.04em}
+
+/* ─── PRICING ─── */
+.pricing-section{max-width:1100px;margin:0 auto;padding:120px 60px}
+.pricing-header{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px}
+.pricing-header .s-title{font-size:clamp(36px,4vw,56px)}
+.pricing-note{font-size:14px;color:var(--mist);line-height:1.7}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.price-card{background:var(--ink);padding:48px 36px;position:relative;transition:background .25s}
+.price-card:hover{background:var(--ink3)}
+.price-card.featured{background:var(--ink3);border:1px solid var(--sage-mid)}
+.price-badge{
+  position:absolute;top:0;right:24px;transform:translateY(-50%);
+  background:var(--gold);color:var(--ink);padding:4px 14px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;border-radius:2px;
+}
+.price-tier{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);margin-bottom:20px}
+.price-amount{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:var(--cream);line-height:1}
+.price-period{font-size:13px;color:var(--mist);margin-bottom:6px}
+.price-products{font-family:'DM Mono',monospace;font-size:11px;color:var(--sage-pale);margin-bottom:28px;letter-spacing:.04em}
+.price-divider{height:1px;background:var(--border);margin-bottom:24px}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
+.price-list li{font-size:12px;color:var(--fog);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.price-list li::before{content:'✓';color:var(--sage-light);font-size:11px;flex-shrink:0;margin-top:1px}
+.price-btn{
+  display:block;width:100%;padding:13px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--border);color:var(--cream);text-decoration:none;
+  transition:all .2s;border-radius:2px;
+}
+.price-btn:hover{background:var(--sage);border-color:var(--sage);color:#fff}
+.price-card.featured .price-btn{background:var(--sage-mid);border-color:var(--sage-mid);color:#fff}
+.price-card.featured .price-btn:hover{background:var(--sage-light)}
+
+/* ─── INVESTOR ─── */
+.investor-section{
+  padding:120px 60px;
+  background:var(--ink2);
+  position:relative;overflow:hidden;
+}
+.investor-section::before{
+  content:'';position:absolute;right:-200px;top:-100px;
+  width:600px;height:600px;
+  border:1px solid var(--border);border-radius:50%;
+  pointer-events:none;
+}
+.investor-section::after{
+  content:'';position:absolute;right:-350px;top:-250px;
+  width:900px;height:900px;
+  border:1px solid var(--border2);border-radius:50%;
+  pointer-events:none;
+}
+.investor-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.investor-left .s-title{font-size:clamp(36px,4vw,56px);margin-bottom:24px}
+.investor-left p{font-size:15px;color:var(--mist);line-height:1.8;margin-bottom:40px}
+.traction-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--border)}
+.traction-item{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .2s;
+}
+.traction-item:last-child{border-bottom:none}
+.traction-item:hover{background:var(--ink3)}
+.traction-label{font-size:13px;color:var(--mist)}
+.traction-value{font-family:'DM Mono',monospace;font-size:12px;color:var(--sage-pale);letter-spacing:.04em}
+.investor-cta-box{
+  border:1px solid var(--border);padding:40px;
+  display:flex;flex-direction:column;gap:20px;
+}
+.investor-cta-box h3{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--cream)}
+.investor-cta-box p{font-size:13px;color:var(--mist);line-height:1.7}
+.investor-btn{
+  display:block;padding:14px 28px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--sage-mid);color:#fff;text-decoration:none;
+  border-radius:2px;text-align:center;transition:background .2s;
+}
+.investor-btn:hover{background:var(--sage-light)}
+.investor-btn-ghost{
+  display:block;padding:14px 28px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--border);color:var(--cream);text-decoration:none;
+  border-radius:2px;text-align:center;transition:all .2s;
+}
+.investor-btn-ghost:hover{border-color:var(--sage-mid);color:var(--sage-pale)}
+
+/* ─── CTA MARQUEE ─── */
+.marquee-cta{
+  padding:80px 0;overflow:hidden;border-top:1px solid var(--border);
+  background:var(--ink);
+}
+.marquee-inner{
+  display:flex;white-space:nowrap;
+  animation:ticker 20s linear infinite;
+}
+.marquee-item{
+  font-family:'Playfair Display',serif;font-size:clamp(40px,6vw,80px);
+  font-weight:400;font-style:italic;color:var(--border);
+  padding:0 40px;flex-shrink:0;transition:color .3s;
+}
+.marquee-item.accent{color:var(--sage-mid)}
+
+/* ─── FINAL CTA ─── */
+.final-cta{
+  padding:140px 60px;text-align:center;
+  background:var(--sage);position:relative;overflow:hidden;
+}
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+.final-cta h2{
+  font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,96px);
+  font-weight:400;color:#fff;line-height:.95;margin-bottom:32px;
+  position:relative;
+}
+.final-cta h2 em{font-style:italic;color:var(--cream2)}
+.final-cta p{font-size:16px;color:rgba(255,255,255,.7);max-width:480px;margin:0 auto 48px;line-height:1.7;position:relative}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative}
+.btn-white{
+  padding:16px 40px;background:#fff;color:var(--sage);
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;border-radius:2px;transition:all .2s;
+}
+.btn-white:hover{background:var(--cream2)}
+.btn-outline-white{
+  padding:16px 40px;border:1px solid rgba(255,255,255,.4);color:#fff;
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;border-radius:2px;transition:all .2s;
+}
+.btn-outline-white:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--ink);padding:48px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--border);flex-wrap:wrap;gap:24px;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.footer-links{display:flex;gap:32px}
+.footer-links a{font-family:'DM Mono',monospace;font-size:11px;color:var(--mist);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+.footer-links a:hover{color:var(--sage-pale)}
+.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.04em}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.hero-label{animation:fadeUp .6s ease both}
+.hero-h1{animation:fadeUp .8s ease .1s both}
+.hero-meta{animation:fadeUp .8s ease .25s both}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  nav{padding:18px 24px}
+  .nav-links{display:none}
+  section,
+  .products-section,
+  .pricing-section,
+  .investor-section{padding:80px 24px}
+  .hero{padding:0 24px 60px}
+  .hero-h1 .line2{padding-left:0}
+  .hero-meta{flex-direction:column;gap:32px;align-items:flex-start}
+  .problem-header{grid-template-columns:1fr}
+  .problem-grid{grid-template-columns:1fr}
+  .products-row{grid-template-columns:1fr}
+  .product-tile-wide{grid-column:span 1}
+  .product-tile-wide{display:block}
+  .tile-wide-left{border-right:none;border-bottom:1px solid var(--border)}
+  .market-grid{grid-template-columns:repeat(2,1fr)}
+  .market-card{border-right:none;border-bottom:1px solid var(--border)}
+  .pricing-header{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .investor-inner{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center}
+  .footer-links{flex-wrap:wrap;justify-content:center}
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="https://normandintech.github.io/Homepage/" class="nav-wordmark">NormandinTECH</a>
+    <span class="nav-slash">/</span>
+    <span class="nav-vertical">Cannabis AI</span>
+  </div>
+  <div class="nav-links">
+    <a href="#products">Products</a>
+    <a href="#market">Market</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#investors">Investors</a>
+  </div>
+  <a href="mailto:gridiqsupport@gmail.com?subject=Cannabis AI Suite Demo" class="nav-cta">Request Demo</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-label">NormandinTECH · Cannabis AI Suite · 2026</div>
+  <h1 class="hero-h1">
+    AI intelligence<br>
+    <span class="line2">for the <em>cannabis</em><br>operator</span>
+  </h1>
+  <div class="hero-meta">
+    <p class="hero-desc">Six purpose-built AI products covering every vertical cannabis businesses struggle with — compliance, cultivation, retail, customer loyalty, and marketing. Built for operators who need to do more with less.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">AI Products</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">$100B</div>
+        <div class="hero-stat-label">Market by 2034</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">50</div>
+        <div class="hero-stat-label">States Monitored</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <div class="ticker-item"><div class="ticker-dot"></div>ComplianceIQ · Regulatory monitoring AI</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>GrowIQ · Cultivation intelligence</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>DispensaryIQ · Retail analytics hub</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>BudtenderAI · Product recommendation engine</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>LoyaltyIQ · Churn prediction &amp; retention</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>CannaContent AI · Compliant marketing copy</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Built by NormandinTECH · Paradise, California</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>ComplianceIQ · Regulatory monitoring AI</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>GrowIQ · Cultivation intelligence</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>DispensaryIQ · Retail analytics hub</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>BudtenderAI · Product recommendation engine</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>LoyaltyIQ · Churn prediction &amp; retention</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>CannaContent AI · Compliant marketing copy</div>
+    <div class="ticker-item"><div class="ticker-dot"></div>Built by NormandinTECH · Paradise, California</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="problem-inner">
+    <div class="problem-header reveal">
+      <div>
+        <div class="s-label">The problem</div>
+        <h2 class="s-title problem-title">The industry runs on guesswork</h2>
+      </div>
+      <p class="problem-intro">Cannabis operators face regulatory chaos, hostile ad platforms, manual compliance, and tightening margins — all while a wave of debt matures in 2026. The businesses that survive will be the ones running on AI.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <div class="problem-num">01</div>
+        <div class="problem-name">Compliance changes overnight</div>
+        <div class="problem-text">State regulations shift constantly with no warning. Florida's 64ER25-6, New York's billboard ban, FCC TCPA 2025 rules — most operators learn about changes after they're already in violation. Manual tracking doesn't scale across multiple states.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-num">02</div>
+        <div class="problem-name">Ad platforms are hostile territory</div>
+        <div class="problem-text">Instagram, Google, and Facebook aggressively restrict cannabis advertising — shadow-banning accounts, flagging content, and disapproving campaigns. Operators trying to grow have almost no paid acquisition channels available to them.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-num">03</div>
+        <div class="problem-name">Inventory is managed on gut feel</div>
+        <div class="problem-text">Most dispensaries know what sold last week, but not why. Overstock destroys margins. Stockouts destroy loyalty. A $30k wrong buy on the wrong strain can wipe out a month of profit — and it keeps happening manually everywhere.</div>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-num">04</div>
+        <div class="problem-name">Debt wave hitting in 2026</div>
+        <div class="problem-text">A major wave of cannabis debt is maturing in 2026. Operators need to extract significantly more profit from existing operations — without massive new capital investment. AI efficiency tools aren't optional anymore. They're the path to survival.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<div class="products-section" id="products">
+  <div class="products-header reveal">
+    <div class="s-label">The suite</div>
+    <h2 class="s-title">Six products.<br>Every vertical covered.</h2>
+  </div>
+  <div class="products-row">
+
+    <a class="product-tile reveal" href="cannabis-suite/complianceiq/index.html">
+      <div class="tile-number">01 · PORT 3010</div>
+      <div class="tile-name">ComplianceIQ</div>
+      <div class="tile-port">CIQ-DEMO-00000000</div>
+      <div class="tile-desc">Real-time regulatory intelligence. Never get caught off-guard by a law change again. METRC compliance automation built in.</div>
+      <ul class="tile-features">
+        <li>50-state regulation monitoring with instant alerts</li>
+        <li>METRC / seed-to-sale audit trail automation</li>
+        <li>Content pre-approval before you publish</li>
+        <li>Violation flagging before regulators do</li>
+      </ul>
+      <div class="tile-arrow">Open app</div>
+    </a>
+
+    <a class="product-tile reveal" href="cannabis-suite/growiq/index.html">
+      <div class="tile-number">02 · PORT 3011</div>
+      <div class="tile-name">GrowIQ</div>
+      <div class="tile-port">GIQ-DEMO-00000000</div>
+      <div class="tile-desc">Cultivation intelligence for growers who can't afford to lose a harvest. IoT sensor analysis, threat detection, yield prediction.</div>
+      <ul class="tile-features">
+        <li>IoT sensor analysis — temp, humidity, CO₂, VPD, EC</li>
+        <li>Pest, mold and disease early detection AI</li>
+        <li>Strain genetics + yield prediction models</li>
+        <li>Water and nutrient optimization automation</li>
+      </ul>
+      <div class="tile-arrow">Open app</div>
+    </a>
+
+    <a class="product-tile reveal" href="cannabis-suite/dispensaryiq/index.html">
+      <div class="tile-number">03 · PORT 3012</div>
+      <div class="tile-name">DispensaryIQ</div>
+      <div class="tile-port">DIQ-DEMO-00000000</div>
+      <div class="tile-desc">The retail intelligence hub. Inventory forecasting, revenue analytics, AI-generated SOPs, and loss prevention in one platform.</div>
+      <ul class="tile-features">
+        <li>SKU-level demand forecasting + auto-reorder</li>
+        <li>Revenue attribution and trend analytics</li>
+        <li>AI-generated SOPs from best-performer data</li>
+        <li>Foot traffic heatmaps + loss prevention</li>
+      </ul>
+      <div class="tile-arrow">Open app</div>
+    </a>
+
+    <a class="product-tile reveal" href="cannabis-suite/budtenderai/index.html">
+      <div class="tile-number">04 · PORT 3013</div>
+      <div class="tile-name">BudtenderAI</div>
+      <div class="tile-port">BAI-DEMO-00000000</div>
+      <div class="tile-desc">AI product recommendations for recreational and medical customers. Embeddable widget for dispensary websites and kiosks.</div>
+      <ul class="tile-features">
+        <li>Strain, cannabinoid and terpene rec engine</li>
+        <li>Medical intake flow — ailment to product match</li>
+        <li>Embeddable widget for any dispensary website</li>
+        <li>Real-world patient data informed suggestions</li>
+      </ul>
+      <div class="tile-arrow">Open app</div>
+    </a>
+
+    <a class="product-tile reveal" href="cannabis-suite/loyaltyiq/index.html">
+      <div class="tile-number">05 · PORT 3014</div>
+      <div class="tile-name">LoyaltyIQ</div>
+      <div class="tile-port">LIQ-DEMO-00000000</div>
+      <div class="tile-desc">Stop guessing who's about to leave. Predict churn before it happens, segment customers, and auto-generate retention campaigns.</div>
+      <ul class="tile-features">
+        <li>Churn prediction scoring per customer</li>
+        <li>VIP vs at-risk customer segmentation</li>
+        <li>Personalized re-engagement campaign generator</li>
+        <li>Compliant SMS and email within ad restrictions</li>
+      </ul>
+      <div class="tile-arrow">Open app</div>
+    </a>
+
+    <a class="product-tile reveal" href="cannabis-suite/cannacontentai/index.html">
+      <div class="tile-number">06 · PORT 3015</div>
+      <div class="tile-name">CannaContent AI</div>
+      <div class="tile-port">CCA-DEMO-00000000</div>
+      <div class="tile-desc">Compliant marketing copy that won't get your accounts shadow-banned. Platform-safe content for Instagram, Google, SMS, and SEO.</div>
+      <ul class="tile-features">
+        <li>Shadow-ban avoidance on all major platforms</li>
+        <li>21+ audience framing built into every output</li>
+        <li>SEO-optimized content for organic dominance</li>
+        <li>Multi-state compliance rules baked in</li>
+      </ul>
+      <div class="tile-arrow">Open app</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- MARKET -->
+<section class="market-section" id="market">
+  <div class="market-inner">
+    <div class="reveal" style="margin-bottom:56px">
+      <div class="s-label">Market opportunity</div>
+      <h2 class="s-title" style="font-size:clamp(36px,4.5vw,56px);max-width:600px">A $100B industry that's barely started using AI</h2>
+    </div>
+    <div class="market-grid reveal">
+      <div class="market-card">
+        <div class="market-num">$100B</div>
+        <div class="market-label">Projected global cannabis market by 2034</div>
+        <div class="market-source">Cannabis Business Times</div>
+      </div>
+      <div class="market-card">
+        <div class="market-num">40–60%</div>
+        <div class="market-label">Cannabis transactions influenced by AI by end of 2026</div>
+        <div class="market-source">Sweed Platform Data, 2025</div>
+      </div>
+      <div class="market-card">
+        <div class="market-num">430K</div>
+        <div class="market-label">Cannabis industry employees — most operating manually</div>
+        <div class="market-source">New Frontier Data</div>
+      </div>
+      <div class="market-card">
+        <div class="market-num">24</div>
+        <div class="market-label">Legal adult-use states — each with its own compliance framework</div>
+        <div class="market-source">NORML, April 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<div class="pricing-section" id="pricing">
+  <div class="pricing-header reveal">
+    <div>
+      <div class="s-label">Pricing</div>
+      <h2 class="s-title">Simple. Operator-friendly.</h2>
+    </div>
+    <p class="pricing-note">All plans include live AI on every product. No per-seat licensing. No surprise overages. Cannabis operators are cash-constrained — our pricing reflects that.</p>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">$299</div>
+      <div class="price-period">/month</div>
+      <div class="price-products">2 products included</div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Choose any 2 Cannabis AI products</li>
+        <li>Single location</li>
+        <li>Monthly compliance updates</li>
+        <li>Email support</li>
+        <li>Demo key access</li>
+      </ul>
+      <a href="mailto:gridiqsupport@gmail.com?subject=Cannabis AI Starter Plan" class="price-btn">Get started</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-tier">Operator</div>
+      <div class="price-amount">$599</div>
+      <div class="price-period">/month</div>
+      <div class="price-products">All 6 products included</div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>Full Cannabis AI Suite — all 6 products</li>
+        <li>Up to 5 locations</li>
+        <li>Real-time regulatory monitoring</li>
+        <li>API access for integrations</li>
+        <li>Priority support</li>
+        <li>Custom demo key</li>
+      </ul>
+      <a href="mailto:gridiqsupport@gmail.com?subject=Cannabis AI Operator Plan Demo" class="price-btn">Request demo</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount">$1,299</div>
+      <div class="price-period">/month</div>
+      <div class="price-products">Unlimited + white-label</div>
+      <div class="price-divider"></div>
+      <ul class="price-list">
+        <li>All 6 products + white-label rights</li>
+        <li>Unlimited locations</li>
+        <li>Dedicated account manager</li>
+        <li>Custom integrations (POS, METRC)</li>
+        <li>SLA guarantee</li>
+        <li>Investor-ready analytics reporting</li>
+      </ul>
+      <a href="mailto:gridiqsupport@gmail.com?subject=Cannabis AI Enterprise" class="price-btn">Contact sales</a>
+    </div>
+  </div>
+</div>
+
+<!-- INVESTOR -->
+<section class="investor-section" id="investors">
+  <div class="investor-inner">
+    <div class="investor-left reveal">
+      <div class="s-label">For investors</div>
+      <h2 class="s-title">Built to scale. Ready for capital.</h2>
+      <p>NormandinTECH is a solo-founded, AI-native SaaS operation deploying across multiple high-value verticals simultaneously. The Cannabis AI Suite is the latest product line — six live products, proven architecture, and a market with massive unmet demand.</p>
+      <div class="traction-list">
+        <div class="traction-item">
+          <span class="traction-label">Products live</span>
+          <span class="traction-value">6 Cannabis AI products</span>
+        </div>
+        <div class="traction-item">
+          <span class="traction-label">Total NormandinTECH products</span>
+          <span class="traction-value">16+ across 4 verticals</span>
+        </div>
+        <div class="traction-item">
+          <span class="traction-label">Other verticals</span>
+          <span class="traction-value">Grid · Real Estate · Public Safety · Gaming</span>
+        </div>
+        <div class="traction-item">
+          <span class="traction-label">Infrastructure</span>
+          <span class="traction-value">DigitalOcean · PM2 · nginx · Let's Encrypt</span>
+        </div>
+        <div class="traction-item">
+          <span class="traction-label">Founder location</span>
+          <span class="traction-value">Paradise, California</span>
+        </div>
+        <div class="traction-item">
+          <span class="traction-label">Revenue model</span>
+          <span class="traction-value">SaaS · $299–$1,299/mo · Gumroad</span>
+        </div>
+      </div>
+    </div>
+    <div class="investor-right reveal">
+      <div class="investor-cta-box">
+        <h3>Schedule a founder call</h3>
+        <p>Seth Normandin — founder of NormandinTECH — is available for investor conversations, partnership discussions, and enterprise operator demos.</p>
+        <a href="mailto:gridiqsupport@gmail.com?subject=NormandinTECH Investor Inquiry" class="investor-btn">Email the founder</a>
+        <a href="https://normandintech.github.io/Homepage/" class="investor-btn-ghost">View full portfolio</a>
+      </div>
+      <div style="margin-top:24px;padding:28px;border:1px solid var(--border)">
+        <div class="s-label" style="margin-bottom:16px">Why cannabis AI now</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:13px;color:var(--mist);line-height:1.6;padding-left:14px;border-left:2px solid var(--sage-mid)">AI will influence 40–60% of cannabis transactions by end of 2026. Most operators have zero AI tooling today.</div>
+          <div style="font-size:13px;color:var(--mist);line-height:1.6;padding-left:14px;border-left:2px solid var(--sage-mid)">Enterprise compliance tools cost $2,000+/mo. Our full suite is $599. The gap is enormous.</div>
+          <div style="font-size:13px;color:var(--mist);line-height:1.6;padding-left:14px;border-left:2px solid var(--sage-mid)">430,000 industry employees. Most doing manually what our software does in seconds.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE CTA -->
+<div class="marquee-cta">
+  <div class="marquee-inner">
+    <span class="marquee-item">Compliance automation</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Cultivation intelligence</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Retail analytics</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Churn prediction</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Compliant content</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Product recommendations</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Compliance automation</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Cultivation intelligence</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Retail analytics</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Churn prediction</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Compliant content</span>
+    <span class="marquee-item accent">·</span>
+    <span class="marquee-item">Product recommendations</span>
+    <span class="marquee-item accent">·</span>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Ready to run a<br><em>smarter operation?</em></h2>
+  <p>Request a demo key and have your team live on the Cannabis AI Suite the same day.</p>
+  <div class="cta-btns">
+    <a href="mailto:gridiqsupport@gmail.com?subject=Cannabis AI Suite Demo Request" class="btn-white">Request demo key</a>
+    <a href="cannabis-suite/landing/index.html" class="btn-outline-white">View suite details</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NormandinTECH · Cannabis AI</div>
+  <div class="footer-links">
+    <a href="https://normandintech.github.io/Homepage/">Full Portfolio</a>
+    <a href="cannabis-suite/complianceiq/index.html">ComplianceIQ</a>
+    <a href="cannabis-suite/growiq/index.html">GrowIQ</a>
+    <a href="cannabis-suite/dispensaryiq/index.html">DispensaryIQ</a>
+    <a href="cannabis-suite/budtenderai/index.html">BudtenderAI</a>
+    <a href="cannabis-suite/loyaltyiq/index.html">LoyaltyIQ</a>
+    <a href="cannabis-suite/cannacontentai/index.html">CannaContent AI</a>
+  </div>
+  <div class="footer-copy">© 2026 NormandinTECH · Paradise, California</div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=(mx-4)+'px';cursor.style.top=(my-4)+'px';
+});
+function animRing(){
+  rx+=(mx-rx-16)*.12;
+  ry+=(my-ry-16)*.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button,.product-tile,.problem-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2.5)';ring.style.transform='scale(1.4)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)'});
+});
+
+// Scroll reveal
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}});
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
