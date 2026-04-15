@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComplianceIQ — Cannabis Regulatory Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#1a4a2e;--green-mid:#2d7a4f;--green-light:#4db87a;
+  --gold:#c8a84b;--cream:#faf8f2;--dark:#0e1a13;
+  --text:#1c2b20;--muted:#5a7a62;--border:#c8dac0;
+  --red:#c0392b;--amber:#d68910;--sidebar:260px
+}
+body{background:var(--cream);color:var(--text);font-family:'Instrument Sans',sans-serif;display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:var(--sidebar);background:var(--dark);display:flex;flex-direction:column;
+  position:fixed;left:0;top:0;bottom:0;z-index:50
+}
+.sidebar-logo{padding:28px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo .product{font-family:'Fraunces',serif;font-size:20px;color:#fff;font-weight:600}
+.sidebar-logo .by{font-size:11px;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;margin-top:2px}
+.sidebar-demo{
+  margin:16px;padding:8px 12px;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);
+  border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.06em
+}
+nav.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto}
+.nav-section{padding:8px 20px 4px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 20px;
+  color:rgba(255,255,255,.55);font-size:13px;cursor:pointer;transition:all .15s;
+  border-left:2px solid transparent;text-decoration:none
+}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--green-light)}
+.nav-item .icon{width:16px;height:16px;opacity:.7;font-size:14px}
+
+/* Main */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{
+  background:#fff;border-bottom:1px solid var(--border);padding:16px 32px;
+  display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40
+}
+.topbar-title{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--dark)}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.alert-badge{
+  background:var(--red);color:#fff;border-radius:100px;padding:4px 12px;
+  font-size:12px;font-family:'DM Mono',monospace;animation:pulse 2s infinite
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.state-selector{
+  border:1px solid var(--border);padding:8px 14px;border-radius:6px;
+  font-size:13px;font-family:'Instrument Sans',sans-serif;color:var(--text);background:var(--cream);cursor:pointer
+}
+
+.content{padding:32px;display:flex;flex-direction:column;gap:24px}
+
+/* Alert strip */
+.alert-strip{
+  background:#fff3cd;border:1px solid #ffc107;border-left:4px solid var(--amber);
+  border-radius:8px;padding:16px 20px;display:flex;align-items:center;gap:16px
+}
+.alert-strip .alert-icon{font-size:20px}
+.alert-strip .alert-text{flex:1}
+.alert-strip .alert-text strong{display:block;font-size:14px;font-weight:500;color:var(--dark)}
+.alert-strip .alert-text span{font-size:12px;color:var(--amber)}
+
+/* KPI Cards */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px}
+.kpi-label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.kpi-value{font-family:'Fraunces',serif;font-size:36px;font-weight:600;color:var(--dark);line-height:1}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:6px}
+.kpi-ok{color:var(--green-mid)}
+.kpi-warn{color:var(--amber)}
+.kpi-danger{color:var(--red)}
+
+/* Regulation table */
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.card-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--dark)}
+.card-action{font-size:12px;color:var(--green-mid);cursor:pointer;font-family:'DM Mono',monospace}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 20px;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);background:var(--cream)}
+td{padding:14px 20px;font-size:13px;border-bottom:1px solid rgba(200,218,192,.4);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(77,184,122,.04)}
+.status-badge{padding:3px 10px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;font-weight:500;display:inline-block}
+.status-ok{background:#e8f5ee;color:var(--green-mid)}
+.status-warn{background:#fff8e1;color:var(--amber)}
+.status-danger{background:#fdecea;color:var(--red)}
+.status-new{background:#e3f2fd;color:#1565c0}
+
+/* Compliance chat */
+.chat-section{display:grid;grid-template-columns:1fr 360px;gap:24px}
+.chat-box{background:#fff;border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;height:480px}
+.chat-messages{flex:1;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:80%;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.6}
+.chat-msg.user{background:var(--green);color:#fff;align-self:flex-end;border-radius:10px 10px 2px 10px}
+.chat-msg.ai{background:var(--cream);border:1px solid var(--border);align-self:flex-start;border-radius:10px 10px 10px 2px}
+.chat-msg.ai .ai-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:4px}
+.chat-input-row{padding:16px;border-top:1px solid var(--border);display:flex;gap:10px}
+.chat-input{
+  flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:'Instrument Sans',sans-serif;outline:none;
+  transition:border-color .2s
+}
+.chat-input:focus{border-color:var(--green-mid)}
+.chat-send{
+  background:var(--green);color:#fff;border:none;border-radius:8px;
+  padding:10px 18px;font-size:13px;cursor:pointer;transition:background .2s;
+  font-family:'Instrument Sans',sans-serif
+}
+.chat-send:hover{background:var(--green-mid)}
+
+/* Quick actions */
+.quick-panel{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px}
+.quick-panel h4{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--dark);margin-bottom:16px}
+.quick-btn{
+  width:100%;text-align:left;padding:12px 16px;border:1px solid var(--border);border-radius:8px;
+  background:var(--cream);font-size:13px;color:var(--text);cursor:pointer;margin-bottom:8px;
+  transition:all .2s;font-family:'Instrument Sans',sans-serif
+}
+.quick-btn:hover{background:var(--green-pale);border-color:var(--green-mid);color:var(--green)}
+.quick-btn span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+.quick-state{margin-top:16px}
+.quick-state h5{font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.state-chips{display:flex;flex-wrap:wrap;gap:6px}
+.state-chip{
+  padding:4px 10px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;
+  cursor:pointer;border:1px solid var(--border);background:var(--cream);color:var(--text);
+  transition:all .2s
+}
+.state-chip:hover,.state-chip.active{background:var(--green);color:#fff;border-color:var(--green)}
+.state-chip.warn{border-color:var(--amber);color:var(--amber)}
+.state-chip.danger{border-color:var(--red);color:var(--red)}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="product">ComplianceIQ</div>
+    <div class="by">by NormandinTECH</div>
+  </div>
+  <div class="sidebar-demo">CIQ-DEMO-00000000</div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Monitor</div>
+    <a class="nav-item active" href="#">⚡ Live Alerts</a>
+    <a class="nav-item" href="#">🗺 State Tracker</a>
+    <a class="nav-item" href="#">📋 Regulation Feed</a>
+    <div class="nav-section">Compliance</div>
+    <a class="nav-item" href="#">🌱 METRC / Seed-to-Sale</a>
+    <a class="nav-item" href="#">📄 Audit Trail</a>
+    <a class="nav-item" href="#">✅ Content Pre-Approval</a>
+    <div class="nav-section">Reports</div>
+    <a class="nav-item" href="#">📊 Compliance Score</a>
+    <a class="nav-item" href="#">📁 Violation History</a>
+    <a class="nav-item" href="#">⚙️ Settings</a>
+  </nav>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Live Regulatory Dashboard</div>
+    <div class="topbar-right">
+      <select class="state-selector">
+        <option>All Monitored States</option>
+        <option>California</option>
+        <option>Colorado</option>
+        <option>New York</option>
+        <option>Florida</option>
+        <option>Illinois</option>
+      </select>
+      <div class="alert-badge">3 New Alerts</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="alert-strip">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">
+        <strong>New York Billboard Ban — Enforcement began Feb 2026</strong>
+        <span>All outdoor cannabis advertising within 500ft of schools now prohibited. Review your media buys.</span>
+      </div>
+      <button onclick="addChatMsg('What do I need to do about the NY billboard ban?')" style="background:var(--amber);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;cursor:pointer">Ask ComplianceIQ</button>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">Compliance Score</div>
+        <div class="kpi-value kpi-ok">94<span style="font-size:20px">%</span></div>
+        <div class="kpi-sub">↑ 3pts this month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Open Alerts</div>
+        <div class="kpi-value kpi-warn">3</div>
+        <div class="kpi-sub">2 high · 1 medium</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">States Monitored</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-sub">of 24 legal states</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Last Reg Change</div>
+        <div class="kpi-value" style="font-size:22px;margin-top:6px">2d ago</div>
+        <div class="kpi-sub">Florida 64ER25-6</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Regulation Monitoring Feed</div>
+        <div class="card-action">Export CSV</div>
+      </div>
+      <table>
+        <tr>
+          <th>State</th>
+          <th>Regulation</th>
+          <th>Category</th>
+          <th>Effective</th>
+          <th>Impact</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td><strong>FL</strong></td>
+          <td>Emergency Rule 64ER25-6 — Advertising restrictions update</td>
+          <td>Marketing</td>
+          <td>Mar 2026</td>
+          <td>High</td>
+          <td><span class="status-badge status-danger">Action Required</span></td>
+        </tr>
+        <tr>
+          <td><strong>NY</strong></td>
+          <td>Billboard Ban — 500ft school proximity enforcement</td>
+          <td>Outdoor Ads</td>
+          <td>Feb 2026</td>
+          <td>High</td>
+          <td><span class="status-badge status-danger">Action Required</span></td>
+        </tr>
+        <tr>
+          <td><strong>CA</strong></td>
+          <td>71.6% adult audience threshold — media buys</td>
+          <td>Media</td>
+          <td>Jan 2026</td>
+          <td>Medium</td>
+          <td><span class="status-badge status-warn">Review</span></td>
+        </tr>
+        <tr>
+          <td><strong>FCC</strong></td>
+          <td>TCPA 2025 — One-to-one explicit SMS consent</td>
+          <td>SMS/Email</td>
+          <td>Jan 2025</td>
+          <td>High</td>
+          <td><span class="status-badge status-ok">Compliant</span></td>
+        </tr>
+        <tr>
+          <td><strong>CO</strong></td>
+          <td>Packaging child-resistant requirement update v3</td>
+          <td>Packaging</td>
+          <td>Dec 2025</td>
+          <td>Low</td>
+          <td><span class="status-badge status-ok">Compliant</span></td>
+        </tr>
+        <tr>
+          <td><strong>IL</strong></td>
+          <td>Social equity license renewal documentation</td>
+          <td>Licensing</td>
+          <td>Apr 2026</td>
+          <td>Medium</td>
+          <td><span class="status-badge status-new">Upcoming</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="chat-section">
+      <div class="chat-box">
+        <div class="card-header">
+          <div class="card-title">Ask ComplianceIQ</div>
+          <div style="font-size:11px;color:var(--green-mid);font-family:'DM Mono',monospace">AI-powered · real-time regs</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg ai">
+            <div class="ai-label">ComplianceIQ</div>
+            Welcome. I monitor cannabis regulations across all 50 states in real time. Ask me anything about compliance, recent law changes, or what actions your dispensary needs to take.
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" class="chat-input" id="chatInput" placeholder="Ask about a state regulation, METRC, advertising rules..." onkeydown="if(event.key==='Enter')sendMsg()">
+          <button class="chat-send" onclick="sendMsg()">Send</button>
+        </div>
+      </div>
+
+      <div class="quick-panel">
+        <h4>Quick Compliance Checks</h4>
+        <button class="quick-btn" onclick="addChatMsg('What are the current California advertising rules for cannabis?')">
+          Is my CA marketing compliant?
+          <span>Check against current CA regs</span>
+        </button>
+        <button class="quick-btn" onclick="addChatMsg('What do I need to do to stay compliant with METRC seed-to-sale tracking?')">
+          METRC audit prep checklist
+          <span>Generate audit-ready checklist</span>
+        </button>
+        <button class="quick-btn" onclick="addChatMsg('What SMS rules do I need to follow for cannabis marketing under TCPA 2025?')">
+          SMS compliance — TCPA 2025
+          <span>One-to-one consent requirements</span>
+        </button>
+        <button class="quick-btn" onclick="addChatMsg('Which states have the strictest cannabis advertising rules right now?')">
+          Strictest ad states ranked
+          <span>State-by-state ad restrictions</span>
+        </button>
+        <div class="quick-state">
+          <h5>State Alert Status</h5>
+          <div class="state-chips">
+            <div class="state-chip danger" onclick="addChatMsg('What are the latest Florida cannabis regulations?')">FL</div>
+            <div class="state-chip danger" onclick="addChatMsg('What are the latest New York cannabis regulations?')">NY</div>
+            <div class="state-chip warn" onclick="addChatMsg('What are the latest California cannabis regulations?')">CA</div>
+            <div class="state-chip active" onclick="addChatMsg('What are the latest Colorado cannabis regulations?')">CO</div>
+            <div class="state-chip" onclick="addChatMsg('What are the latest Illinois cannabis regulations?')">IL</div>
+            <div class="state-chip" onclick="addChatMsg('What are the latest Michigan cannabis regulations?')">MI</div>
+            <div class="state-chip" onclick="addChatMsg('What are the latest Oregon cannabis regulations?')">OR</div>
+            <div class="state-chip" onclick="addChatMsg('What are the latest Washington cannabis regulations?')">WA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+async function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  addChatMsg(msg);
+  await getAIResponse(msg);
+}
+
+function addChatMsg(text){
+  const box=document.getElementById('chatMessages');
+  const div=document.createElement('div');
+  div.className='chat-msg user';
+  div.textContent=text;
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+  getAIResponse(text);
+}
+
+async function getAIResponse(userMsg){
+  const box=document.getElementById('chatMessages');
+  const thinking=document.createElement('div');
+  thinking.className='chat-msg ai';
+  thinking.innerHTML='<div class="ai-label">ComplianceIQ</div><em style="color:var(--muted)">Analyzing regulations...</em>';
+  box.appendChild(thinking);
+  box.scrollTop=box.scrollHeight;
+  
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are ComplianceIQ, a cannabis regulatory compliance AI by NormandinTECH. You monitor cannabis regulations across all 50 US states in real time. You help cannabis operators (dispensaries, cultivators, manufacturers) stay compliant with state and federal regulations. 
+
+Key areas: METRC/seed-to-sale tracking, advertising restrictions by state, packaging requirements, licensing, SMS/TCPA compliance, age verification. 
+
+Be specific, actionable, and cite specific regulations when relevant. Keep responses concise but thorough. Today's date is April 2026.`,
+        messages:[{role:'user',content:userMsg}]
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'Unable to retrieve response. Please try again.';
+    thinking.innerHTML=`<div class="ai-label">ComplianceIQ</div>${reply.replace(/\n/g,'<br>')}`;
+  }catch(e){
+    thinking.innerHTML='<div class="ai-label">ComplianceIQ</div>Connection error. Please check your network and try again.';
+  }
+  box.scrollTop=box.scrollHeight;
+}
+</script>
+</body>
+</html>

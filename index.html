@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cannabis AI Suite — NormandinTECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#1a4a2e;
+  --green-mid:#2d7a4f;
+  --green-light:#4db87a;
+  --green-pale:#e8f5ee;
+  --gold:#c8a84b;
+  --gold-light:#f0d890;
+  --cream:#faf8f2;
+  --dark:#0e1a13;
+  --text:#1c2b20;
+  --muted:#5a7a62;
+  --border:#c8dac0;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:'Instrument Sans',sans-serif;overflow-x:hidden}
+
+/* Grain overlay */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;opacity:.4
+}
+
+/* Nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 48px;
+  background:rgba(250,248,242,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border)
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo .leaf{width:28px;height:28px;background:var(--green);border-radius:50% 50% 50% 0;transform:rotate(-45deg)}
+.nav-logo span{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--green)}
+.nav-links{display:flex;gap:32px}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;letter-spacing:.02em;transition:color .2s}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{background:var(--green);color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:500;transition:background .2s}
+.nav-cta:hover{background:var(--green-mid)}
+
+/* Hero */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 48px 80px;
+  position:relative;overflow:hidden
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(77,184,122,0.12) 0%,transparent 70%);
+  pointer-events:none
+}
+.hero-tag{
+  display:inline-block;background:var(--green-pale);border:1px solid var(--border);
+  color:var(--green-mid);padding:6px 16px;border-radius:100px;font-size:12px;
+  font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px
+}
+.hero h1{
+  font-family:'Fraunces',serif;font-size:clamp(52px,8vw,96px);
+  font-weight:300;line-height:1.02;color:var(--dark);margin-bottom:24px;
+  max-width:900px
+}
+.hero h1 em{font-style:italic;color:var(--green-mid)}
+.hero p{font-size:19px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:48px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.btn-primary{
+  background:var(--green);color:#fff;padding:16px 36px;border-radius:8px;
+  text-decoration:none;font-size:15px;font-weight:500;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(26,74,46,.25)
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(26,74,46,.35)}
+.btn-ghost{
+  border:1.5px solid var(--border);color:var(--text);padding:16px 36px;border-radius:8px;
+  text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s,color .2s
+}
+.btn-ghost:hover{border-color:var(--green-mid);color:var(--green)}
+
+/* Stats bar */
+.stats{
+  display:flex;align-items:center;justify-content:center;gap:64px;
+  padding:40px 48px;background:var(--dark);flex-wrap:wrap
+}
+.stat-item{text-align:center}
+.stat-num{font-family:'Fraunces',serif;font-size:42px;font-weight:600;color:var(--green-light);line-height:1}
+.stat-label{font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;letter-spacing:.05em;text-transform:uppercase;font-family:'DM Mono',monospace}
+
+/* Products section */
+.products{padding:100px 48px;max-width:1200px;margin:0 auto}
+.section-label{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--green-mid);margin-bottom:16px
+}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(36px,5vw,56px);font-weight:300;color:var(--dark);margin-bottom:56px;max-width:600px}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border)}
+.product-card{
+  background:var(--cream);padding:40px 36px;cursor:pointer;
+  transition:background .2s;position:relative;overflow:hidden
+}
+.product-card::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--green-mid);transform:scaleX(0);transform-origin:left;transition:transform .3s
+}
+.product-card:hover{background:#fff}
+.product-card:hover::before{transform:scaleX(1)}
+.product-port{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:20px
+}
+.product-name{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--dark);margin-bottom:8px}
+.product-tagline{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:24px}
+.product-features{list-style:none;display:flex;flex-direction:column;gap:8px}
+.product-features li{
+  font-size:12px;color:var(--muted);padding-left:16px;position:relative;line-height:1.5
+}
+.product-features li::before{content:'→';position:absolute;left:0;color:var(--green-light);font-size:11px}
+.product-demo{
+  display:inline-block;margin-top:24px;font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--green-mid);letter-spacing:.05em;
+  border-bottom:1px solid var(--border);padding-bottom:2px;text-decoration:none;
+  transition:border-color .2s,color .2s
+}
+.product-demo:hover{color:var(--green);border-color:var(--green-mid)}
+
+/* Full width card */
+.product-card-full{grid-column:span 3}
+
+/* Pain points section */
+.pain{padding:100px 48px;background:var(--dark);color:#fff}
+.pain-inner{max-width:1200px;margin:0 auto}
+.pain h2{font-family:'Fraunces',serif;font-size:clamp(36px,5vw,56px);font-weight:300;margin-bottom:64px;color:#fff}
+.pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.pain-item{border-top:1px solid rgba(255,255,255,.12);padding:32px 0}
+.pain-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--green-light);letter-spacing:.1em;margin-bottom:12px}
+.pain-title{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:#fff;margin-bottom:12px}
+.pain-text{font-size:14px;color:rgba(255,255,255,.55);line-height:1.7}
+
+/* Pricing */
+.pricing{padding:100px 48px;max-width:1100px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.price-card{
+  border:1.5px solid var(--border);border-radius:12px;padding:40px 32px;
+  position:relative;transition:border-color .3s,transform .3s
+}
+.price-card:hover{border-color:var(--green-mid);transform:translateY(-4px)}
+.price-card.featured{
+  background:var(--green);border-color:var(--green);color:#fff
+}
+.price-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--dark);padding:4px 14px;border-radius:100px;
+  font-size:11px;font-weight:500;font-family:'DM Mono',monospace;white-space:nowrap
+}
+.price-tier{font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:16px}
+.price-card.featured .price-tier{color:rgba(255,255,255,.7)}
+.price-amount{font-family:'Fraunces',serif;font-size:48px;font-weight:600;color:var(--dark);line-height:1}
+.price-card.featured .price-amount{color:#fff}
+.price-period{font-size:14px;color:var(--muted);margin-bottom:8px}
+.price-card.featured .price-period{color:rgba(255,255,255,.7)}
+.price-desc{font-size:13px;color:var(--muted);margin-bottom:32px;line-height:1.5}
+.price-card.featured .price-desc{color:rgba(255,255,255,.75)}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
+.price-list li{font-size:13px;color:var(--text);padding-left:20px;position:relative}
+.price-card.featured .price-list li{color:rgba(255,255,255,.9)}
+.price-list li::before{content:'✓';position:absolute;left:0;color:var(--green-light);font-size:12px}
+.price-card.featured .price-list li::before{color:var(--gold-light)}
+.price-btn{
+  width:100%;padding:13px;border-radius:6px;font-size:14px;font-weight:500;
+  border:1.5px solid var(--green);background:transparent;color:var(--green);cursor:pointer;
+  text-decoration:none;display:block;text-align:center;transition:background .2s,color .2s
+}
+.price-btn:hover{background:var(--green);color:#fff}
+.price-card.featured .price-btn{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff}
+.price-card.featured .price-btn:hover{background:rgba(255,255,255,.3)}
+
+/* CTA Section */
+.cta-section{
+  padding:100px 48px;text-align:center;
+  background:linear-gradient(135deg,var(--green-pale) 0%,#fff 50%,var(--green-pale) 100%)
+}
+.cta-section h2{font-family:'Fraunces',serif;font-size:clamp(36px,5vw,60px);font-weight:300;color:var(--dark);margin-bottom:20px}
+.cta-section p{font-size:17px;color:var(--muted);margin-bottom:40px}
+
+/* Footer */
+footer{
+  background:var(--dark);color:rgba(255,255,255,.5);padding:40px 48px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:gap;
+  font-size:13px
+}
+footer .logo{font-family:'Fraunces',serif;color:rgba(255,255,255,.8);font-size:16px}
+footer a{color:rgba(255,255,255,.4);text-decoration:none}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-tag,.hero h1,.hero p,.hero-actions{animation:fadeUp .7s ease both}
+.hero h1{animation-delay:.1s}
+.hero p{animation-delay:.2s}
+.hero-actions{animation-delay:.3s}
+
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  .nav-links{display:none}
+  .hero{padding:100px 24px 60px}
+  .stats{gap:32px;padding:32px 24px}
+  .products,.pain,.pricing,.cta-section{padding:60px 24px}
+  .products-grid{grid-template-columns:1fr}
+  .product-card-full{grid-column:span 1}
+  .pain-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:16px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="leaf"></div>
+    <span>NormandinTECH Cannabis AI</span>
+  </div>
+  <div class="nav-links">
+    <a href="#products">Products</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#pricing" class="nav-cta">Request Demo</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag">Cannabis Intelligence Suite · 2026</div>
+  <h1>AI built for the<br><em>cannabis operator</em></h1>
+  <p>Six purpose-built tools covering compliance, cultivation, retail intelligence, customer loyalty, and marketing — so operators can run smarter, not harder.</p>
+  <div class="hero-actions">
+    <a href="#products" class="btn-primary">Explore the Suite</a>
+    <a href="#pricing" class="btn-ghost">See Pricing</a>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat-item">
+    <div class="stat-num">$100B</div>
+    <div class="stat-label">Market by 2034</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">6</div>
+    <div class="stat-label">AI Products</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">50</div>
+    <div class="stat-label">States Monitored</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">60%</div>
+    <div class="stat-label">Organic Search Gain</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">40–60%</div>
+    <div class="stat-label">AI-Influenced Transactions '26</div>
+  </div>
+</div>
+
+<section class="products" id="products">
+  <div class="section-label">The Suite</div>
+  <h2 class="section-title">Every tool your cannabis business needs</h2>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="product-port">Port 3010 · CIQ-DEMO-00000000</div>
+      <div class="product-name">ComplianceIQ</div>
+      <div class="product-tagline">Real-time regulatory intelligence — never get caught off-guard by a law change again.</div>
+      <ul class="product-features">
+        <li>50-state regulation monitoring with instant alerts</li>
+        <li>METRC / seed-to-sale audit trail automation</li>
+        <li>Content pre-approval before you publish</li>
+        <li>Violation flagging before regulators do</li>
+      </ul>
+      <a href="../complianceiq/index.html" class="product-demo">Open app →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-port">Port 3011 · GIQ-DEMO-00000000</div>
+      <div class="product-name">GrowIQ</div>
+      <div class="product-tagline">Cultivation intelligence for growers who can't afford to lose a harvest.</div>
+      <ul class="product-features">
+        <li>IoT sensor analysis — temp, humidity, CO₂, VPD</li>
+        <li>Pest, mold & disease early detection AI</li>
+        <li>Strain genetics + yield prediction models</li>
+        <li>Water & nutrient optimization automation</li>
+      </ul>
+      <a href="../growiq/index.html" class="product-demo">Open app →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-port">Port 3012 · DIQ-DEMO-00000000</div>
+      <div class="product-name">DispensaryIQ</div>
+      <div class="product-tagline">The retail intelligence hub — inventory, sales, and security in one AI platform.</div>
+      <ul class="product-features">
+        <li>SKU-level demand forecasting + auto-reorder</li>
+        <li>Revenue attribution & trend analytics</li>
+        <li>AI-generated SOPs from top-performing data</li>
+        <li>Loss prevention + foot traffic heatmaps</li>
+      </ul>
+      <a href="../dispensaryiq/index.html" class="product-demo">Open app →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-port">Port 3013 · BAI-DEMO-00000000</div>
+      <div class="product-name">BudtenderAI</div>
+      <div class="product-tagline">AI product recommendations for both recreational and medical cannabis shoppers.</div>
+      <ul class="product-features">
+        <li>Strain/cannabinoid/terpene recommendation engine</li>
+        <li>Medical intake flow — ailment to product match</li>
+        <li>Embeddable widget for dispensary websites</li>
+        <li>Real-world patient data informed suggestions</li>
+      </ul>
+      <a href="../budtenderai/index.html" class="product-demo">Open app →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-port">Port 3014 · LIQ-DEMO-00000000</div>
+      <div class="product-name">LoyaltyIQ</div>
+      <div class="product-tagline">Stop guessing who's about to leave — predict churn and act before it happens.</div>
+      <ul class="product-features">
+        <li>Churn prediction scoring per customer</li>
+        <li>High-value vs at-risk customer segmentation</li>
+        <li>Personalized re-engagement campaign generator</li>
+        <li>Compliant SMS/email within ad restrictions</li>
+      </ul>
+      <a href="../loyaltyiq/index.html" class="product-demo">Open app →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-port">Port 3015 · CCA-DEMO-00000000</div>
+      <div class="product-name">CannaContent AI</div>
+      <div class="product-tagline">Compliant marketing copy that won't get your accounts shadow-banned.</div>
+      <ul class="product-features">
+        <li>Platform-safe copy for Instagram, Google, SMS</li>
+        <li>21+ audience framing built into every output</li>
+        <li>SEO-optimized for organic search dominance</li>
+        <li>Multi-state compliance rules baked in</li>
+      </ul>
+      <a href="../cannacontentai/index.html" class="product-demo">Open app →</a>
+    </div>
+
+  </div>
+</section>
+
+<section class="pain">
+  <div class="pain-inner">
+    <h2>The problems every cannabis operator knows too well</h2>
+    <div class="pain-grid">
+      <div class="pain-item">
+        <div class="pain-num">01</div>
+        <div class="pain-title">Compliance changes overnight</div>
+        <div class="pain-text">State regs shift constantly. Florida's 64ER25-6, New York's billboard ban, FCC TCPA updates — operators learn about changes after they're already in violation.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">02</div>
+        <div class="pain-title">Ad platforms are hostile territory</div>
+        <div class="pain-text">Instagram, Google, and Facebook restrict cannabis advertising. Shadow bans, account flags, and takedowns cost operators visibility they can't buy back.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">03</div>
+        <div class="pain-title">Inventory decisions are gut-feel</div>
+        <div class="pain-text">Most dispensaries know what sold last week but not why. Overstock kills margins. Stockouts kill loyalty. Neither needs to happen with real AI forecasting.</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-num">04</div>
+        <div class="pain-title">Debt wave hitting in 2026</div>
+        <div class="pain-text">A major wave of cannabis debt is maturing. Operators need to squeeze more profit from existing operations — without massive new capital investment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Simple, operator-friendly pricing</h2>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">$299</div>
+      <div class="price-period">/month</div>
+      <div class="price-desc">2 products of your choice. Perfect for single-location dispensaries.</div>
+      <ul class="price-list">
+        <li>2 Cannabis AI products</li>
+        <li>1 location</li>
+        <li>Email support</li>
+        <li>Demo key access</li>
+        <li>Monthly compliance updates</li>
+      </ul>
+      <a href="mailto:seth@normandintech.com" class="price-btn">Get started</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-tier">Operator</div>
+      <div class="price-amount">$599</div>
+      <div class="price-period">/month</div>
+      <div class="price-desc">Full suite access. Built for growing multi-location operators.</div>
+      <ul class="price-list">
+        <li>All 6 Cannabis AI products</li>
+        <li>Up to 5 locations</li>
+        <li>Priority support</li>
+        <li>API access</li>
+        <li>Real-time reg monitoring</li>
+        <li>Custom demo key</li>
+      </ul>
+      <a href="mailto:seth@normandintech.com" class="price-btn">Request demo</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount">$1,299</div>
+      <div class="price-period">/month</div>
+      <div class="price-desc">Unlimited locations, white-label, and dedicated onboarding.</div>
+      <ul class="price-list">
+        <li>All 6 products + white-label</li>
+        <li>Unlimited locations</li>
+        <li>Dedicated account manager</li>
+        <li>Custom integrations</li>
+        <li>SLA guarantee</li>
+        <li>Investor-ready reporting</li>
+      </ul>
+      <a href="mailto:seth@normandintech.com" class="price-btn">Contact sales</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="contact">
+  <div class="section-label">Get Started</div>
+  <h2>Ready to run a smarter operation?</h2>
+  <p>Request a demo key and be up and running the same day.</p>
+  <a href="mailto:seth@normandintech.com?subject=Cannabis AI Suite Demo Request" class="btn-primary">Request your demo key</a>
+</section>
+
+<footer>
+  <div class="logo">NormandinTECH</div>
+  <div>Cannabis AI Suite · Paradise, California</div>
+  <a href="mailto:seth@normandintech.com">seth@normandintech.com</a>
+</footer>
+
+</body>
+</html>

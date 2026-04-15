@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CannaContent AI — Compliant Cannabis Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green:#1a4a2e;--green-mid:#2d7a4f;--green-light:#4db87a;--green-pale:#e8f5ee;
+  --gold:#c8a84b;--cream:#faf8f2;--dark:#0e1a13;
+  --text:#1c2b20;--muted:#5a7a62;--border:#c8dac0;
+  --red:#c0392b;--amber:#d68910;--sidebar:260px
+}
+body{background:var(--cream);color:var(--text);font-family:'Instrument Sans',sans-serif;display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar);background:var(--dark);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:50}
+.sidebar-logo{padding:28px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo .product{font-family:'Fraunces',serif;font-size:20px;color:#fff;font-weight:600}
+.sidebar-logo .by{font-size:11px;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;margin-top:2px}
+.sidebar-demo{margin:16px;padding:8px 12px;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:.06em}
+nav.sidebar-nav{flex:1;padding:16px 0}
+.nav-section{padding:8px 20px 4px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.55);font-size:13px;cursor:pointer;transition:all .15s;border-left:2px solid transparent;text-decoration:none}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--green-light)}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar-title{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--dark)}
+.compliance-badge{display:flex;align-items:center;gap:6px;background:var(--green-pale);border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:12px;color:var(--green-mid);font-family:'DM Mono',monospace}
+.content{padding:32px;display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start}
+
+/* Content form */
+.form-panel{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:88px}
+.form-header{padding:20px 24px;border-bottom:1px solid var(--border);background:var(--dark);color:#fff}
+.form-header h3{font-family:'Fraunces',serif;font-size:18px;font-weight:300}
+.form-header p{font-size:12px;opacity:.6;margin-top:3px}
+.form-body{padding:22px;display:flex;flex-direction:column;gap:16px}
+.form-group label{display:block;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:7px}
+.form-select,.form-input,.form-textarea{
+  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;
+  font-size:13px;font-family:'Instrument Sans',sans-serif;outline:none;
+  background:var(--cream);color:var(--text);transition:border-color .2s
+}
+.form-select:focus,.form-input:focus,.form-textarea:focus{border-color:var(--green-mid)}
+.form-textarea{resize:vertical;min-height:70px}
+.state-chips{display:flex;flex-wrap:wrap;gap:6px}
+.state-chip{padding:4px 10px;border-radius:100px;font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;border:1px solid var(--border);background:var(--cream);color:var(--text);transition:all .2s;user-select:none}
+.state-chip.selected,.state-chip:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.gen-btn{
+  width:100%;background:var(--green);color:#fff;border:none;border-radius:10px;
+  padding:14px;font-size:14px;font-weight:500;cursor:pointer;
+  font-family:'Instrument Sans',sans-serif;transition:background .2s
+}
+.gen-btn:hover{background:var(--green-mid)}
+.gen-btn:disabled{background:var(--muted);cursor:not-allowed}
+
+/* Content output area */
+.output-area{display:flex;flex-direction:column;gap:20px}
+.content-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.content-card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.content-card-title{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--dark)}
+.content-card-meta{display:flex;gap:8px;align-items:center}
+.platform-badge{padding:3px 10px;border-radius:100px;font-size:10px;font-family:'DM Mono',monospace}
+.badge-ig{background:#fce4ec;color:#880e4f}
+.badge-google{background:#e3f2fd;color:#0d47a1}
+.badge-sms{background:#f3e5f5;color:#4a148c}
+.badge-seo{background:#e8f5e9;color:#1b5e20}
+.badge-email{background:#fff8e1;color:#e65100}
+.compliance-check{
+  display:flex;align-items:center;gap:6px;font-size:11px;
+  font-family:'DM Mono',monospace;color:var(--green-mid)
+}
+.content-card-body{padding:20px}
+.content-text{
+  font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;
+  background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:16px
+}
+.content-card-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.char-count{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+.copy-btn{padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:transparent;font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:all .2s}
+.copy-btn:hover{background:var(--green-pale);border-color:var(--green-mid)}
+.warning-check{color:var(--amber);font-size:11px;font-family:'DM Mono',monospace}
+
+/* Placeholder */
+.placeholder-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:60px 40px;text-align:center}
+.placeholder-icon{font-size:48px;margin-bottom:16px}
+.placeholder h4{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--dark);margin-bottom:8px}
+.placeholder p{font-size:13px;color:var(--muted);line-height:1.7;max-width:380px;margin:0 auto}
+
+/* Compliance rules panel */
+.rules-panel{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.rule-item{padding:12px 18px;border-bottom:1px solid rgba(200,218,192,.3);display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.5}
+.rule-item:last-child{border-bottom:none}
+.rule-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.rule-ok{color:var(--green-mid)}
+.rule-warn{color:var(--amber)}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="product">CannaContent AI</div>
+    <div class="by">by NormandinTECH</div>
+  </div>
+  <div class="sidebar-demo">CCA-DEMO-00000000</div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Create</div>
+    <a class="nav-item active" href="#">✍️ Content Generator</a>
+    <a class="nav-item" href="#">🔍 SEO Keywords</a>
+    <a class="nav-item" href="#">📅 Content Calendar</a>
+    <div class="nav-section">Platforms</div>
+    <a class="nav-item" href="#">📸 Instagram</a>
+    <a class="nav-item" href="#">🔎 Google / SEO</a>
+    <a class="nav-item" href="#">📱 SMS Campaigns</a>
+    <a class="nav-item" href="#">📧 Email Marketing</a>
+    <div class="nav-section">Compliance</div>
+    <a class="nav-item" href="#">✅ Pre-Approval Queue</a>
+    <a class="nav-item" href="#">📜 State Rules</a>
+    <a class="nav-item" href="#">⚙️ Brand Voice</a>
+  </nav>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">CannaContent AI</div>
+    <div class="compliance-badge">✓ Compliance-first content generation</div>
+  </div>
+
+  <div class="content">
+    <div class="form-panel">
+      <div class="form-header">
+        <h3>Content brief</h3>
+        <p>Fill in your details to generate platform-safe cannabis content</p>
+      </div>
+      <div class="form-body">
+        <div class="form-group">
+          <label>Dispensary / brand name</label>
+          <input class="form-input" id="brandName" placeholder="e.g. Green Valley Dispensary" value="Green Valley Dispensary">
+        </div>
+        <div class="form-group">
+          <label>Content type</label>
+          <select class="form-select" id="contentType">
+            <option value="instagram_post">Instagram caption</option>
+            <option value="google_ad">Google Ad copy</option>
+            <option value="seo_blog">SEO blog post intro</option>
+            <option value="sms_blast">SMS blast</option>
+            <option value="email_newsletter">Email newsletter</option>
+            <option value="product_description">Product description</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Topic / product focus</label>
+          <input class="form-input" id="topic" placeholder="e.g. new Gelato strain arrival, weekend sale, educational post about terpenes...">
+        </div>
+        <div class="form-group">
+          <label>Tone</label>
+          <select class="form-select" id="tone">
+            <option value="friendly_educational">Friendly & educational</option>
+            <option value="professional">Professional / clinical</option>
+            <option value="community">Community-focused</option>
+            <option value="premium">Premium / luxury</option>
+            <option value="bold">Bold & confident</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Target state(s) for compliance</label>
+          <div class="state-chips" id="stateChips">
+            <div class="state-chip selected" data-val="CA">CA</div>
+            <div class="state-chip" data-val="CO">CO</div>
+            <div class="state-chip" data-val="NY">NY</div>
+            <div class="state-chip" data-val="FL">FL</div>
+            <div class="state-chip" data-val="IL">IL</div>
+            <div class="state-chip" data-val="OR">OR</div>
+            <div class="state-chip" data-val="WA">WA</div>
+            <div class="state-chip" data-val="MI">MI</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Key message or offer (optional)</label>
+          <textarea class="form-textarea" id="keyMsg" placeholder="Any specific message, promo, or CTA you want included..."></textarea>
+        </div>
+        <button class="gen-btn" id="genBtn" onclick="generateContent()">Generate Compliant Content →</button>
+      </div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+      <div class="placeholder-card">
+        <div class="placeholder-icon">✍️</div>
+        <h4>Ready to create compliant content</h4>
+        <p>Fill in your content brief on the left and click Generate. CannaContent AI will produce platform-safe copy that avoids shadow-banning triggers, maintains 21+ framing, and is optimized for organic reach.</p>
+      </div>
+
+      <div class="rules-panel">
+        <div class="content-card-header">
+          <div class="content-card-title">Active compliance rules</div>
+          <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace">Applied to all content</div>
+        </div>
+        <div class="rule-item"><span class="rule-icon rule-ok">✓</span><span>21+ audience language only — no appeal to minors</span></div>
+        <div class="rule-item"><span class="rule-icon rule-ok">✓</span><span>No health or medical claims about cannabis products</span></div>
+        <div class="rule-item"><span class="rule-icon rule-ok">✓</span><span>No consumption imagery language on restricted platforms</span></div>
+        <div class="rule-item"><span class="rule-icon rule-ok">✓</span><span>Platform shadow-ban keyword avoidance (IG, Google)</span></div>
+        <div class="rule-item"><span class="rule-icon rule-ok">✓</span><span>SMS includes STOP opt-out per TCPA 2025</span></div>
+        <div class="rule-item"><span class="rule-icon rule-warn">⚠</span><span>CA: 71.6% adult audience required for media buys</span></div>
+        <div class="rule-item"><span class="rule-icon rule-warn">⚠</span><span>NY: No outdoor billboard advertising as of Feb 2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.state-chip').forEach(chip=>{
+  chip.addEventListener('click',()=>chip.classList.toggle('selected'));
+});
+
+function getSelectedStates(){
+  return [...document.querySelectorAll('.state-chip.selected')].map(c=>c.dataset.val).join(', ')||'all states';
+}
+
+const platformMeta={
+  instagram_post:{badge:'badge-ig',label:'Instagram'},
+  google_ad:{badge:'badge-google',label:'Google Ad'},
+  seo_blog:{badge:'badge-seo',label:'SEO Blog'},
+  sms_blast:{badge:'badge-sms',label:'SMS'},
+  email_newsletter:{badge:'badge-email',label:'Email'},
+  product_description:{badge:'badge-seo',label:'Product'},
+};
+
+async function generateContent(){
+  const brand=document.getElementById('brandName').value||'our dispensary';
+  const type=document.getElementById('contentType').value;
+  const topic=document.getElementById('topic').value||'our products and community';
+  const tone=document.getElementById('tone').value;
+  const states=getSelectedStates();
+  const keyMsg=document.getElementById('keyMsg').value;
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;btn.textContent='Generating...';
+
+  const meta=platformMeta[type]||{badge:'badge-seo',label:'Content'};
+
+  const typeInstructions={
+    instagram_post:'Write an Instagram caption (150-220 chars, no hashtags with cannabis terms that get flagged, use community language)',
+    google_ad:'Write a Google Ad (headline under 30 chars, description under 90 chars, no banned cannabis terms)',
+    seo_blog:'Write a compelling SEO blog post intro paragraph (150-200 words) optimized for organic search',
+    sms_blast:'Write an SMS message under 160 characters with STOP opt-out included',
+    email_newsletter:'Write an email newsletter section with subject line and 2-3 paragraph body',
+    product_description:'Write a compliant product description highlighting qualities without medical claims',
+  };
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are CannaContent AI, a cannabis marketing content generator by NormandinTECH. You create platform-safe, fully compliant cannabis marketing content.
+
+STRICT compliance rules you ALWAYS follow:
+- Never make health or medical claims
+- No consumption imagery or language on restricted platforms
+- All content must be appropriate for 21+ adults only
+- Avoid flagged Instagram/Google cannabis keywords that cause shadow banning
+- SMS must include "Reply STOP to opt out"
+- For Google Ads: avoid terms like "marijuana", "weed", "dispensary" in headlines
+- No claims about effects on medical conditions
+- Keep tone warm, community-focused, and educational
+
+Generate real, usable marketing content.`,
+        messages:[{role:'user',content:`Brand: ${brand}
+Content type: ${typeInstructions[type]}
+Topic: ${topic}
+Tone: ${tone.replace(/_/g,' ')}
+Target states: ${states}
+Key message: ${keyMsg||'none'}
+
+Generate the content. After the content, add a brief "Compliance notes:" section listing 2-3 specific reasons this content is platform-safe.`}]
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'Error generating content.';
+
+    const [contentPart,notesPart]=reply.split(/compliance notes?:/i);
+
+    const card=document.createElement('div');
+    card.className='content-card';
+    card.innerHTML=`
+      <div class="content-card-header">
+        <div class="content-card-title">${meta.label} — ${topic.slice(0,40)||'Generated content'}</div>
+        <div class="content-card-meta">
+          <span class="platform-badge ${meta.badge}">${meta.label}</span>
+          <span class="compliance-check">✓ Compliance checked</span>
+        </div>
+      </div>
+      <div class="content-card-body">
+        <div class="content-text">${(contentPart||reply).trim()}</div>
+        ${notesPart?`<div style="margin-top:14px;padding:12px 14px;background:#e8f5ee;border-radius:8px;font-size:12px;color:var(--green-mid);line-height:1.6"><strong>Compliance notes:</strong><br>${notesPart.trim()}</div>`:''}
+      </div>
+      <div class="content-card-footer">
+        <div class="char-count">${(contentPart||reply).trim().length} characters</div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(this.closest('.content-card').querySelector('.content-text').textContent).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)})">Copy</button>
+      </div>
+    `;
+
+    const area=document.getElementById('outputArea');
+    const placeholder=area.querySelector('.placeholder-card');
+    if(placeholder)placeholder.remove();
+    area.insertBefore(card,area.firstChild);
+  }catch(e){
+    alert('Network error. Please check your connection and try again.');
+  }
+  btn.disabled=false;btn.textContent='Generate Compliant Content →';
+}
+</script>
+</body>
+</html>
