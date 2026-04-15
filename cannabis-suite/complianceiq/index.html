@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="NormandinTECH - AI software built in Paradise, California. Real estate AI, grid intelligence, and gaming tools.">
+<meta property="og:title" content="NormandinTECH - Software Built in Paradise, CA">
+<title>NormandinTECH - Software Built in Paradise, CA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080c12;--bg2:#0d1219;--bg3:#121820;--bg4:#181f2a;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.11);--text:#eef0f3;--text2:#8b95a3;--text3:#3d4754;--max:1100px;--fs:"Instrument Serif",Georgia,serif;--fb:"DM Sans",system-ui,sans-serif;--gold:#c8a96e;--gd:rgba(200,169,110,.08);--teal:#2dd4bf;--td:rgba(45,212,191,.08);--violet:#a78bfa;--vd:rgba(167,139,250,.08);--amber:#fbbf24;--ad:rgba(251,191,36,.08);--blue:#60a5fa;--bd:rgba(96,165,250,.08);--green:#4ade80;--grd:rgba(74,222,128,.08);--orange:#fb923c;--od:rgba(251,146,60,.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--bg4)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;height:58px;display:flex;align-items:center;justify-content:space-between;transition:background .3s}
+nav.scrolled{background:rgba(8,12,18,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nl{font-family:var(--fs);font-size:19px;color:var(--text);text-decoration:none;letter-spacing:-.01em}
+.nl em{font-style:italic;color:var(--gold)}
+.nls{display:flex;gap:28px;align-items:center}
+.nls a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .15s}
+.nls a:hover{color:var(--text)}
+@media(max-width:640px){.nls{display:none}nav{padding:0 20px}}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 32px 80px;position:relative;overflow:hidden;text-align:center}
+.hg{position:absolute;border-radius:50%;filter:blur(160px);pointer-events:none;width:800px;height:800px;background:radial-gradient(ellipse,rgba(200,169,110,.04) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%)}
+.hgr{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,black 20%,transparent 100%)}
+.hi{max-width:700px;position:relative;z-index:1}
+.hb{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:.14em;padding:5px 14px;border-radius:99px;background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);margin-bottom:28px;opacity:0;transform:translateY(12px);animation:up .5s .1s ease forwards}
+.bd{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.h1{font-family:var(--fs);font-size:clamp(46px,7vw,88px);font-weight:400;line-height:1.02;letter-spacing:-.025em;margin-bottom:22px;opacity:0;transform:translateY(18px);animation:up .7s .2s ease forwards}
+.h1 em{font-style:italic;color:var(--gold)}
+.hs{font-size:17px;font-weight:300;color:var(--text2);line-height:1.72;max-width:520px;margin:0 auto 36px;opacity:0;transform:translateY(14px);animation:up .6s .38s ease forwards}
+.ha{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;opacity:0;animation:up .5s .52s ease forwards}
+.bp{padding:12px 28px;background:var(--gold);color:var(--bg);border:none;border-radius:8px;font-family:var(--fs);font-size:17px;cursor:pointer;text-decoration:none;transition:background .15s,transform .1s}
+.bp:hover{background:#dfc08a;transform:translateY(-1px)}
+.bg{padding:12px 22px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:8px;font-family:var(--fb);font-size:14px;cursor:pointer;text-decoration:none;transition:all .15s}
+.bg:hover{border-color:var(--gold);color:var(--gold)}
+.hcs{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:52px;opacity:0;animation:up .5s .66s ease forwards}
+.hc{text-align:center}
+.hcn{font-family:var(--fs);font-size:32px;color:var(--gold);line-height:1;margin-bottom:4px}
+.hcl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+.hcsep{width:1px;height:36px;background:var(--border2);align-self:center}
+.hor{margin-top:36px;font-size:12px;color:var(--text3);display:flex;align-items:center;justify-content:center;gap:8px;opacity:0;animation:up .5s .78s ease forwards}
+.orl{width:28px;height:1px;background:var(--border2)}
+@keyframes up{to{opacity:1;transform:none}}
+.sec{padding:88px 32px}
+.sec.alt{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.si{max-width:var(--max);margin:0 auto}
+.ch{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.ci{font-size:18px}
+.cl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.12em}
+.cline{flex:1;height:1px;background:var(--border)}
+.ct{font-family:var(--fs);font-size:clamp(28px,3.5vw,42px);font-weight:400;line-height:1.08;letter-spacing:-.02em;margin-bottom:8px}
+.csub{font-size:14px;color:var(--text2);margin-bottom:36px;max-width:540px}
+.g4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:800px){.g4{grid-template-columns:1fr}}
+@media(max-width:640px){.g2{grid-template-columns:1fr}}
+.pc{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:26px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;text-decoration:none;color:inherit;position:relative;overflow:hidden}
+.pc::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:0;transition:opacity .3s}
+.pc:hover{transform:translateY(-2px);border-color:var(--ac)}
+.pc:hover::before{opacity:1}
+.pt{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pi{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.pb{font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.07em}
+.pn{font-family:var(--fs);font-size:20px;font-weight:400;margin-bottom:7px}
+.pd{font-size:13px;color:var(--text2);line-height:1.58;margin-bottom:18px;flex:1}
+.ptags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.ptag{font-size:11px;color:var(--text3);padding:3px 8px;border-radius:6px;background:var(--bg4);border:1px solid var(--border)}
+.pcta{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;text-decoration:none;transition:gap .15s}
+.pcta:hover{gap:8px}
+.stg{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+@media(max-width:700px){.stg{grid-template-columns:1fr;gap:40px}}
+.stl{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+.stt{font-family:var(--fs);font-size:clamp(26px,3vw,38px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:18px}
+.stt em{font-style:italic;color:var(--gold)}
+.stb{font-size:14px;color:var(--text2);line-height:1.78}
+.stb p{margin-bottom:14px}
+.stb p:last-child{margin-bottom:0}
+.sts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ss{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px}
+.ssn{font-family:var(--fs);font-size:38px;color:var(--gold);line-height:1;margin-bottom:5px}
+.ssl{font-size:11px;color:var(--text3);line-height:1.4}
+.fcta{padding:88px 32px;text-align:center;position:relative;overflow:hidden}
+.fci{max-width:580px;margin:0 auto;position:relative;z-index:1}
+.fcg{position:absolute;bottom:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(200,169,110,.04) 0%,transparent 70%);pointer-events:none}
+.fct{font-family:var(--fs);font-size:clamp(34px,4.5vw,54px);font-weight:400;line-height:1.07;letter-spacing:-.025em;margin-bottom:16px}
+.fct em{font-style:italic;color:var(--gold)}
+.fcs{font-size:15px;font-weight:300;color:var(--text2);margin-bottom:32px;line-height:1.65}
+.fcb{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer{padding:28px 32px;border-top:1px solid var(--border)}
+.fi{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.flo{font-family:var(--fs);font-size:17px;color:var(--text2)}
+.flo em{font-style:italic;color:var(--gold)}
+.fls{display:flex;gap:18px;flex-wrap:wrap}
+.fls a{font-size:12px;color:var(--text3);text-decoration:none;transition:color .15s}
+.fls a:hover{color:var(--text2)}
+.fc{font-size:12px;color:var(--text3)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a href="/" class="nl">Normandin<em>TECH</em></a>
+  <div class="nls">
+    <a href="#realestate">Real estate</a>
+    <a href="#grid">Grid</a>
+    <a href="#gaming">Gaming</a>
+    <a href="#story">About</a>
+    <a href="mailto:hello@normandintech.com">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hg"></div>
+  <div class="hgr"></div>
+  <div class="hi">
+    <div class="hb"><div class="bd"></div> Software built in Paradise, CA</div>
+    <h1 class="h1">AI software for<br>the <em>real world.</em></h1>
+    <p class="hs">Seven products across real estate, grid intelligence, and gaming. Built independently, shipped fast, priced fairly. Every product solves a real problem for real professionals.</p>
+    <div class="ha">
+      <a href="#realestate" class="bp">See all products &rarr;</a>
+      <a href="mailto:hello@normandintech.com" class="bg">Get in touch</a>
+    </div>
+    <div class="hcs">
+      <div class="hc"><div class="hcn">7</div><div class="hcl">Products live</div></div>
+      <div class="hcsep"></div>
+      <div class="hc"><div class="hcn">3</div><div class="hcl">Verticals</div></div>
+      <div class="hcsep"></div>
+      <div class="hc"><div class="hcn">1</div><div class="hcl">Founder</div></div>
+      <div class="hcsep"></div>
+      <div class="hc"><div class="hcn">$0</div><div class="hcl">VC funding</div></div>
+    </div>
+    <div class="hor"><div class="orl"></div>Paradise, CA &mdash; where the Camp Fire burned, and we kept building<div class="orl"></div></div>
+  </div>
+</section>
+
+<!-- REAL ESTATE -->
+<section class="sec" id="realestate">
+  <div class="si">
+    <div class="reveal">
+      <div class="ch"><span class="ci">&#127968;</span><span class="cl" style="color:var(--gold)">Real estate AI</span><div class="cline"></div></div>
+      <h2 class="ct">Four products. Every corner of<br><em style="color:var(--gold)">real estate covered.</em></h2>
+      <p class="csub">From listing copy to lease abstraction &mdash; AI tools purpose-built for agents, landlords, transaction coordinators, and commercial brokers.</p>
+    </div>
+    <div class="g4 reveal">
+      <a href="https://normandintech.github.io/propscribe/app/" class="pc" style="--ac:var(--gold)" target="_blank">
+        <div class="pt"><div class="pi">&#10022;</div><span class="pb" style="background:var(--gd);color:var(--gold)">Agents</span></div>
+        <div class="pn">PropScribe AI</div>
+        <div class="pd">AI listing copy with Fair Housing compliance scored on every output. Two-pass audit &mdash; one writes, one audits. Full 50-state compliance database built in.</div>
+        <div class="ptags"><span class="ptag">Listing copy</span><span class="ptag">Instagram</span><span class="ptag">Email campaigns</span><span class="ptag">Fair Housing</span><span class="ptag">50 states</span></div>
+        <span class="pcta" style="color:var(--gold)">Open app &rarr;</span>
+      </a>
+      <a href="https://normandintech.github.io/rentguard/app/" class="pc" style="--ac:var(--teal)" target="_blank">
+        <div class="pt"><div class="pi">&#127969;</div><span class="pb" style="background:var(--td);color:var(--teal)">Landlords</span></div>
+        <div class="pn">RentGuard AI</div>
+        <div class="pd">Your AI property manager for 1&ndash;10 units. Maintenance triage, tenant screening, cash flow analysis, and professional lease documents on demand.</div>
+        <div class="ptags"><span class="ptag">Maintenance triage</span><span class="ptag">Tenant screening</span><span class="ptag">Cash flow</span><span class="ptag">Lease tools</span></div>
+        <span class="pcta" style="color:var(--teal)">Open app &rarr;</span>
+      </a>
+      <a href="https://normandintech.github.io/closetrack/app/" class="pc" style="--ac:var(--violet)" target="_blank">
+        <div class="pt"><div class="pi">&#128203;</div><span class="pb" style="background:var(--vd);color:var(--violet)">Agents + TCs</span></div>
+        <div class="pn">CloseTrack AI</div>
+        <div class="pd">From contract to close, nothing falls through. Deadline tracking, party nudging, issue triage, and document checklists for every transaction.</div>
+        <div class="ptags"><span class="ptag">Deadline builder</span><span class="ptag">Party nudger</span><span class="ptag">Issue triage</span><span class="ptag">Doc checklist</span></div>
+        <span class="pcta" style="color:var(--violet)">Open app &rarr;</span>
+      </a>
+      <a href="https://normandintech.github.io/leaselens/app/" class="pc" style="--ac:var(--amber)" target="_blank">
+        <div class="pt"><div class="pi">&#128269;</div><span class="pb" style="background:var(--ad);color:var(--amber)">CRE</span></div>
+        <div class="pn">LeaseLens AI</div>
+        <div class="pd">Commercial lease intelligence. Abstract any lease in 60 seconds &mdash; 100+ fields extracted, every risk clause flagged, LOI drafting from deal terms.</div>
+        <div class="ptags"><span class="ptag">Lease abstraction</span><span class="ptag">Clause compare</span><span class="ptag">LOI drafter</span><span class="ptag">CRE market AI</span></div>
+        <span class="pcta" style="color:var(--amber)">Open app &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GRID -->
+<section class="sec alt" id="grid">
+  <div class="si">
+    <div class="reveal">
+      <div class="ch"><span class="ci">&#9889;</span><span class="cl" style="color:var(--blue)">Grid intelligence</span><div class="cline"></div></div>
+      <h2 class="ct">AI for the electric grid.<br><em style="color:var(--blue)">Built after the Camp Fire.</em></h2>
+      <p class="csub">GridIQ monitors grid assets in real time, detects vegetation fire risk, predicts outages, and supports PSPS decision-making for rural electric cooperatives.</p>
+    </div>
+    <div class="g2 reveal" style="max-width:700px">
+      <a href="https://gridiq.ink" class="pc" style="--ac:var(--blue)" target="_blank">
+        <div class="pt"><div class="pi">&#128268;</div><span class="pb" style="background:var(--bd);color:var(--blue)">Utilities</span></div>
+        <div class="pn">GridIQ</div>
+        <div class="pd">AI grid intelligence platform for rural electric cooperatives. Real-time asset monitoring, satellite-based vegetation fire risk, outage prediction, and NERC CIP compliance tracking.</div>
+        <div class="ptags"><span class="ptag">Asset monitoring</span><span class="ptag">Fire risk</span><span class="ptag">Outage prediction</span><span class="ptag">NERC compliance</span><span class="ptag">PSPS support</span></div>
+        <span class="pcta" style="color:var(--blue)">View platform &rarr;</span>
+      </a>
+      <div class="pc" style="--ac:var(--blue);cursor:default;opacity:.55">
+        <div class="pt"><div class="pi">&#128752;</div><span class="pb" style="background:var(--bd);color:var(--blue)">Coming soon</span></div>
+        <div class="pn">GridIQ Field</div>
+        <div class="pd">Mobile companion for line crews. Offline-capable asset inspection, work order management, and real-time sync with the GridIQ platform.</div>
+        <div class="ptags"><span class="ptag">Field ops</span><span class="ptag">Offline mode</span><span class="ptag">Asset inspection</span></div>
+        <span class="pcta" style="color:var(--text3)">In development</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMING -->
+<section class="sec" id="gaming">
+  <div class="si">
+    <div class="reveal">
+      <div class="ch"><span class="ci">&#127918;</span><span class="cl" style="color:var(--green)">Gaming tools</span><div class="cline"></div></div>
+      <h2 class="ct">Tools built for<br><em style="color:var(--green)">gaming communities.</em></h2>
+      <p class="csub">Discord bots and AI assistants built for active gaming communities &mdash; from stats tracking across 40+ games to DayZ mod support.</p>
+    </div>
+    <div class="g2 reveal">
+      <a href="https://vegabot.org" class="pc" style="--ac:var(--green)" target="_blank">
+        <div class="pt"><div class="pi">&#129302;</div><span class="pb" style="background:var(--grd);color:var(--green)">Discord</span></div>
+        <div class="pn">VEGA Bot</div>
+        <div class="pd">Discord gaming stats bot covering 40+ games with 28 slash commands. AI coaching powered by Claude, server leaderboards, and premium tier features for serious gaming communities.</div>
+        <div class="ptags"><span class="ptag">40+ games</span><span class="ptag">28 commands</span><span class="ptag">AI coaching</span><span class="ptag">Leaderboards</span><span class="ptag">Discord.js v14</span></div>
+        <span class="pcta" style="color:var(--green)">Visit vegabot.org &rarr;</span>
+      </a>
+      <a href="https://normandintech.github.io/luna/" class="pc" style="--ac:var(--orange)" target="_blank">
+        <div class="pt"><div class="pi">&#127769;</div><span class="pb" style="background:var(--od);color:var(--orange)">DayZ</span></div>
+        <div class="pn">Luna</div>
+        <div class="pd">AI mod assistant for DayZ players and server admins. Instant answers on mods, server config, and community support. RAG document system with persistent memory and Gumroad message packs.</div>
+        <div class="ptags"><span class="ptag">DayZ mods</span><span class="ptag">Server config</span><span class="ptag">RAG system</span><span class="ptag">Redis tracking</span><span class="ptag">Gumroad packs</span></div>
+        <span class="pcta" style="color:var(--orange)">Try Luna &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="sec alt" id="story">
+  <div class="si">
+    <div class="stg">
+      <div class="reveal">
+        <div class="stl">Our story</div>
+        <h2 class="stt">Built in Paradise,<br>CA &mdash; <em>literally.</em></h2>
+        <div class="stb">
+          <p>NormandinTECH is a solo software company founded by Seth Normandin in Paradise, California &mdash; the town destroyed by the 2018 Camp Fire, rebuilt by the people who stayed.</p>
+          <p>Every product is built and shipped independently, using AI as a development and business partner. The goal is simple: build software that solves real problems, price it fairly, and ship it fast.</p>
+          <p>GridIQ was built here because Paradise knows what happens when the grid fails. The real estate suite was built because agents, landlords, and brokers deserve better tools than generic AI with no domain knowledge.</p>
+          <p>No VC. No team. No excuses. Just shipping.</p>
+        </div>
+      </div>
+      <div class="sts reveal">
+        <div class="ss"><div class="ssn">7</div><div class="ssl">Products live and monetized</div></div>
+        <div class="ss"><div class="ssn">50</div><div class="ssl">States in PropScribe compliance database</div></div>
+        <div class="ss"><div class="ssn">3</div><div class="ssl">Verticals: real estate, grid, gaming</div></div>
+        <div class="ss"><div class="ssn">$0</div><div class="ssl">VC funding. Built on conviction alone.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fcta">
+  <div class="fcg"></div>
+  <div class="fci reveal">
+    <h2 class="fct">Real software.<br><em>Real problems solved.</em></h2>
+    <p class="fcs">Every product ships with a free demo key. Try before you buy. No credit card required.</p>
+    <div class="fcb">
+      <a href="#realestate" class="bp">See all products &rarr;</a>
+      <a href="mailto:hello@normandintech.com" class="bg">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi">
+    <div class="flo">Normandin<em>TECH</em></div>
+    <div class="fls">
+      <a href="https://normandintech.github.io/propscribe/app/" target="_blank">PropScribe</a>
+      <a href="https://normandintech.github.io/rentguard/app/" target="_blank">RentGuard</a>
+      <a href="https://normandintech.github.io/closetrack/app/" target="_blank">CloseTrack</a>
+      <a href="https://normandintech.github.io/leaselens/app/" target="_blank">LeaseLens</a>
+      <a href="https://gridiq.ink" target="_blank">GridIQ</a>
+      <a href="https://vegabot.org" target="_blank">VEGA</a>
+      <a href="mailto:hello@normandintech.com">Contact</a>
+    </div>
+    <div class="fc">&copy; 2026 NormandinTECH &mdash; Paradise, CA</div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener("scroll",()=>document.getElementById("nav").classList.toggle("scrolled",window.scrollY>30));
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.08,rootMargin:"0px 0px -30px 0px"});
+document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
